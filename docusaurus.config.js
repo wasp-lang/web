@@ -2,7 +2,7 @@ module.exports = {
   title: 'My Site',
   tagline: 'The tagline of my site',
   url: 'https://wasp-lang.github.io',
-  baseUrl: '/web',
+  baseUrl: '/web/',
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'wasp-lang', // Usually your GitHub org/user name.
