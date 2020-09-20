@@ -15,7 +15,9 @@ module.exports = {
       label: 'Language',
       collapsed: false,
       items: [
-        'doc3'
+        'language/getting-started',
+        'language/overview',
+        'language/basic-elements'
       ]
     }
   ],
