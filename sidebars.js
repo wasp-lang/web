@@ -6,7 +6,8 @@ module.exports = {
       collapsed: false,
       items: [
         'about',
-        'how-it-works'
+        'how-it-works',
+        'is-this-framework'
       ]
     },
     {
