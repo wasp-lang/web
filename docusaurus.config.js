@@ -10,7 +10,7 @@ module.exports = {
   themeConfig: {
     sidebarCollapsible: false,
     navbar: {
-      title: '.wasp',
+      title: '.wasp (alpha)',
       logo: {
         alt: 'Wasp logo',
         src: 'img/wasp-logo.png',

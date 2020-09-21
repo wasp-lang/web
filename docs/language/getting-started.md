@@ -7,7 +7,7 @@ Your Node.js version needs to be at least **14.5.0**. We recommend using
 [nvm](https://github.com/nvm-sh/nvm) for managing your Node.js installation version(s).
 
 ## Installation
-The following command will execute an installation script that will download Wasp binary and place
+The following command will execute an installation script that will download `wasp` binary and place
 it in your `PATH`:
 
 ### OS X / Linux
