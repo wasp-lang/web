@@ -13,12 +13,50 @@ app todoApp {
 }
 ```
 
+#### `app: identifier`
+Name of your app.
+
 #### `title: string`
 Title of your app. It will be displayed in the browser tab, next to the favicon.
 
 ## Page
 
+`Page` is the top-level layout abstraction. Your app can have multiple pages, and they are defined in Wasp
+as follows:
+```css
+page Main {
+    component: import Main from "@ext/pages/Main"
+}
+```
+
+#### `page: identifier`
+Name of the page.
+
+#### `component: js import statement`
+Import statement of the page React element. See importing external code for details.
+
+`Page` also has to be associated with a `Route`, otherwise it won't be accessible in the app.
+
 ## Route
+
+Using `Route` element is a way to implement routing functionality in Wasp:
+```css
+route "/about" -> page About
+```
+
+#### `route: string`
+URL path of the route. Route string can be parametrised and follows the same conventions as
+[React Router](https://reactrouter.com/web/example/query-parameters).
+
+#### `page: page identifier`
+Page identifier of the route's target. Referenced page must be defined somewhere in `.wasp` file.
+
+#### Example - parametrised URL path:
+```css
+route "/task/:id" -> page Task
+```
+For details on URL path format check [React Router](https://reactrouter.com/web/example/query-parameters)
+documentation.
 
 ## Entity
 

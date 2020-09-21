@@ -2,8 +2,8 @@
 title: How it works
 ---
 
-At its core, Wasp works as any other language: input files written in the source, higher-level language are fed
-into the compiler which then produces the code in a target, lower-level language. 
+At its core, Wasp works like any other language: input files written in the source, higher-level language are
+fed into the compiler which then produces the code in a target, lower-level language. 
 
 This is how it looks in the case of Wasp:
 - **source**: `.wasp` files along with NodeJS functions and React components.
