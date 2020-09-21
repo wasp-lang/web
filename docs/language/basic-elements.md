@@ -46,19 +46,115 @@ route "/about" -> page About
 
 #### `route: string`
 URL path of the route. Route string can be parametrised and follows the same conventions as
-[React Router](https://reactrouter.com/web/example/query-parameters).
+[React Router](https://reactrouter.com/web/).
 
 #### `page: page identifier`
 Page identifier of the route's target. Referenced page must be defined somewhere in `.wasp` file.
 
-#### Example - parametrised URL path:
+### Example - parametrised URL path
 ```css
 route "/task/:id" -> page Task
 ```
-For details on URL path format check [React Router](https://reactrouter.com/web/example/query-parameters)
+For details on URL path format check [React Router](https://reactrouter.com/web/)
 documentation.
 
+### Accessing route parameters in a page component
+
+Since Wasp under the hood generates code with [React Router](https://reactrouter.com/web/),
+the same rules apply when accessing URL params in your React components. Here is an example just to get you
+started:
+
+`todoApp.wasp`
+```css
+route "/task/:id" -> page Task
+page Task {
+    component: import Task from "@ext/pages/Task"
+}
+```
+`pages/Task.js`
+```jsx
+import React from 'react'
+
+const Task = (props) => {
+  return (
+    <div>
+      I am showing a task with id: {props.match.params.id}.
+    </div>
+  )
+}
+
+export default Task
+```
+### Navigating between routes
+
+Navigation can be performed from the React code via `<Link/>` component, also using the functionality of
+[React Router](https://reactrouter.com/web/):
+
+`todoApp.wasp`
+```css
+route "/home" -> page Home
+page Home {
+    component: import Home from "@ext/pages/Home"
+}
+```
+
+`pages/OtherPage.js`
+```jsx
+import React from 'react'
+import { Link } from "react-router-dom"
+
+const OtherPage = (props) => {
+  return (
+    <Link to="/home">Go to homepage</Link>
+  )
+}
+```
+
 ## Entity
+
+`Entity` element represents a database model. Wasp uses [Prisma](https://www.prisma.io/) to implement
+database functionality and currently provides only a thin layer above it.
+
+Each `Entity` element corresponds 1-to-1 to Prisma data model and is defined in a following way:
+
+```css
+entityPSL Task {=psl
+    id          Int     @id @default(autoincrement())
+    description String
+    isDone      Boolean @default(false)
+psl=}
+```
+#### `entityPSL: identifier`
+Name of the entity.
+
+#### `{=psl ... psl=}: PSL`
+Definition of entity fields in *Prisma Schema Language* (PSL). See
+[here for intro and examples](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema)
+and [here for a more exhaustive language specification](https://github.com/prisma/specs/tree/master/schema).
+
+### Using entities
+
+Entity-system in Wasp is based on [Prisma](http://www.prisma.io), and currently Wasp provides only a thin layer
+on top of it. The workflow is as follows:
+
+1. Wasp developer creates/updates some of the entities in `.wasp` file
+2. Wasp developer runs `wasp db migrate-save <migration_name>`
+3. Migration data is generated in `migrations/` folder (and should be commited)
+4. Wasp developer uses Prisma JS API to query the database
+
+This is an example of how to import database JS API and use to make a simple database query:
+
+```js
+import Prisma from '@prisma/client'
+
+const prisma = new Prisma.PrismaClient()
+
+export const getTasks = async (args, context) => {
+  const tasks = await prisma.task.findMany({})
+
+  return tasks
+}
+```
 
 ## Queries and Actions (aka Operations)
 
