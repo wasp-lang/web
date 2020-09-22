@@ -3,7 +3,7 @@ title: Getting Started
 ---
 
 ## Requirements
-Your Node.js version needs to be at least **14.5.0**. We recommend using
+Your Node.js version needs to be at least **12.18.0**. We recommend using
 [nvm](https://github.com/nvm-sh/nvm) for managing your Node.js installation version(s).
 
 ## Installation
