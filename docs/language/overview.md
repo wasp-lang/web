@@ -51,5 +51,6 @@ entityPSL Task {=psl
 psl=}
 ```
 
+You can check out a full working example [here](https://github.com/wasp-lang/wasp/tree/master/waspc/examples/todoApp).
 
 In the following sections each of these basic language elements is explained. 
