@@ -18,6 +18,14 @@ module.exports = {
         'language/overview',
         'language/basic-elements'
       ]
+    },
+    {
+      type: 'category',
+      label: 'Other',
+      collapsed: false,
+      items: [
+        'contributing'
+      ]
     }
-  ],
-};
+  ]
+}
