@@ -142,7 +142,8 @@ on top of it. The workflow is as follows:
 3. Migration data is generated in `migrations/` folder (and should be commited)
 4. Wasp developer uses Prisma JS API to query the database
 
-This is an example of how to import database JS API and use to make a simple database query:
+This is an example of how to import database JS API and make a simple database query within a Wasp query
+function.
 
 ```js
 import Prisma from '@prisma/client'
