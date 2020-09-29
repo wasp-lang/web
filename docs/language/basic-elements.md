@@ -249,3 +249,20 @@ Actions are very similar to Queries, so similar that we will only list the diffe
 3. They are declared in Wasp in same way as Queries, but keyword is `action`, not `query`.
 
 More differences and action/query specific features will come in the future versions of Wasp.
+
+
+## Dependencies
+
+You can specify additional npm dependencies in following way, in your *.wasp file:
+
+```
+dependencies {=json
+  "redux": "^4.0.5",
+  "react-redux": "^7.1.3"
+json=}
+```
+
+NOTE: In current implementation of Wasp, if Wasp is already internally using certain npm dependency with certain version specified, you are not allowed to define that same npm dependency yourself while specifying different version.
+If you do that, you will get an error message telling you which exact version you have to use for that dependency.
+This means Wasp dictates exact versions of certain packages, so for example you can't choose version of React you want to use.
+In the future, we will add support for picking any version you like, but we have not implemented that yet. Check [issue #59](https://github.com/wasp-lang/wasp/issues/59) to check out the progress or contribute.
