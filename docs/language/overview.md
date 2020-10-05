@@ -37,11 +37,13 @@ page Main {
 }
 
 query getTasks {
-  fn: import { getTasks } from "@ext/operations.js"
+  fn: import { getTasks } from "@ext/operations.js",
+  entities: [Task]
 }
 
 action createTask {
-  fn: import { createTask } from "@ext/operations.js"
+  fn: import { createTask } from "@ext/operations.js",
+  entities: [Task]
 }
 
 entityPSL Task {=psl

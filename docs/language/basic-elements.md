@@ -142,20 +142,7 @@ on top of it. The workflow is as follows:
 3. Migration data is generated in `migrations/` folder (and should be commited)
 4. Wasp developer uses Prisma JS API to query the database
 
-This is an example of how to import database JS API and make a simple database query within a Wasp query
-function.
-
-```js
-import Prisma from '@prisma/client'
-
-const prisma = new Prisma.PrismaClient()
-
-export const getTasks = async (args, context) => {
-  const tasks = await prisma.task.findMany({})
-
-  return tasks
-}
-```
+Currently entities can be accessed only in Operations (Queries & Actions), so check their part of docs for more info on how to use entities in their context.
 
 ## Queries and Actions (aka Operations)
 
@@ -239,6 +226,43 @@ export getTasks = async (args, context) => {
 ```
 
 and then in client it will be thrown as an Error with corresponding `.message` and `.data` fields.
+
+#### Using entities
+Most often, resources used by Operations will be Entities.
+
+To use an Entity in your Operation, declare in Wasp that Operation uses it:
+```css
+query getTasks {
+  fn: import { getAllTasks } from "@ext/foo.js",
+  entities: [Task]
+}
+```
+
+This will inject specified entity into the context of your Operation.
+Now, you can access Prisma API for that entity like this:
+```js
+// file: ext/foo.js
+
+export getAllTasks = async (args, context) => {
+  return context.entities.Task.findMany({})
+}
+```
+
+where `context.entities.Task` actually exposes `prisma.task` from Prisma API.
+
+#### Cache invalidation
+One of the trickiest part of managing web app state is making sure that data queries are showing is up to date.
+
+Since Wasp is using react-query for managing queries, that means we want to make sure that parts of react-query cache are invalidated when we know they are not up to date any more.
+
+This can be done manually, by using mechanisms provided by react-query (refetch, direct invalidation).
+However, that can often be tricky and error-prone, so Wasp offers quick and effective solution to get you started: automatic invalidation of query cache based on entities that queries / actions are using.
+
+Specifically, if Action A1 uses Entity E1 and Query Q1 also uses Entity E1 and Action A1 is executed, Wasp will recognize that Q1 might not be up-to-date any more and will therefore invalidate its cache, making use it gets updated.
+
+In practice, this means that without really even thinking about it, Wasp will make sure to keep the queries up to date for you.
+
+On the other hand, this kind of automatic invalidation of cache can be wasteful (updating when not needed) and will not work if other resources than entities are used. In that case, make sure to use mechanisms provided by react-query for now, and expect more direct support in Wasp for handling those use cases in a nice elegant way.
 
 
 ### Action
