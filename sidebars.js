@@ -11,10 +11,18 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'Tutorials',
+      collapsed: false,
+      items: [
+        'tutorials/getting-started',
+        'tutorials/todo-app'
+      ]
+    },
+    {
+      type: 'category',
       label: 'Language',
       collapsed: false,
       items: [
-        'language/getting-started',
         'language/overview',
         'language/basic-elements'
       ]

@@ -29,6 +29,9 @@ module.exports = {
         },
       ],
     },
+    prism: {
+      additionalLanguages: ['shell-session']
+    },
     footer: {
       style: 'dark',
       links: [
@@ -79,10 +82,13 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/',
+            'https://github.com/wasp-lang/web/edit/master/docs/',
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
+          customCss: [
+            require.resolve('./src/css/custom.css'),
+            'prismjs/themes/prism-dark.css'
+          ]
         },
       },
     ],
