@@ -13,7 +13,7 @@ module.exports = {
       title: '.wasp (alpha)',
       logo: {
         alt: 'Wasp logo',
-        src: 'img/wasp-logo.png',
+        src: 'img/wasp-logo-eqpar-circle.png',
       },
       items: [
         {
