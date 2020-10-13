@@ -286,6 +286,8 @@ dependencies {=json
 json=}
 ```
 
+You will need to re-run `wasp start` after adding a dependency for Wasp to pick it up.
+
 NOTE: In current implementation of Wasp, if Wasp is already internally using certain npm dependency with certain version specified, you are not allowed to define that same npm dependency yourself while specifying different version.
 If you do that, you will get an error message telling you which exact version you have to use for that dependency.
 This means Wasp dictates exact versions of certain packages, so for example you can't choose version of React you want to use.
