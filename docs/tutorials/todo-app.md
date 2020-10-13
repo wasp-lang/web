@@ -111,12 +111,12 @@ to have Prisma propagate the schema changes to the database.
 
 Next, we want to admire our tasks, so let's list them!
 
-There are two ways to interact with entities in Wasp: [queries and actions (aka operations)](language/basic-elements#queries-and-actions-aka-operations).
+There are two ways to interact with entities in Wasp: [queries and actions (aka operations)](language/basic-elements.md#queries-and-actions-aka-operations).
 
 Queries are here when we need to fetch/read something, while actions are here when we need to change/update something.
 In our case, we will write a query, since we are just listing tasks and not modifying anything.
 
-First, let's declare `getTasks` [query](language/basic-elements#query) in Wasp:
+First, let's declare `getTasks` [query](language/basic-elements.md#query) in Wasp:
 ```css title="main.wasp"
 // ...
 
