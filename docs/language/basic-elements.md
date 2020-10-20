@@ -292,3 +292,194 @@ NOTE: In current implementation of Wasp, if Wasp is already internally using cer
 If you do that, you will get an error message telling you which exact version you have to use for that dependency.
 This means Wasp dictates exact versions of certain packages, so for example you can't choose version of React you want to use.
 In the future, we will add support for picking any version you like, but we have not implemented that yet. Check [issue #59](https://github.com/wasp-lang/wasp/issues/59) to check out the progress or contribute.
+
+
+## Authentication & Authorization
+
+Wasp provides authentication and authorization support out-of-the-box. Enabling it for your app is optional and can be done by adding `auth` element to your `.wasp` file:
+
+```css
+auth {
+    userEntity: User,
+    methods: [ EmailAndPassword ]
+}
+```
+`userEntity: entity`
+Entity which represents the user (sometimes also referred to as *Principal*).
+
+`methods: [AuthMethod]`
+List of authentication methods that Wasp app supports. Currently supported methods are:
+* `EmailAndPassword`: Provides support for authentication with email address and a password.
+
+### Email and Password
+
+`EmailAndPassword` authentication method makes it possible to signup/login into the app by using email address and a password.
+This method requires that `userEntity` specified in `auth` element contains `email: string` and `password: string` fields.
+
+#### Signup
+Wasp provides a function `createNewUser` to be used within a signup action written by a Wasp developer.
+The signup action is not provided directly to allow for adding custom code during creation of the user.
+
+### `createNewUser()`
+```js
+createNewUser(userFields)
+```
+#### `userFields: object`
+An object containing fields of the user entity. `email` and `password` fields are mandatory as they are required to be present in the user entity, as dictated by `EmailAndPassword` authentication method.
+Password is provided as an unhashed `string` and `createNewUser` will take further care of hashing and storing password in the database.
+
+#### `import statement`:
+```js
+import { createNewUser } from @wasp/core/auth.js
+```
+
+Here is a minimal example of a signup action invoking `createNewUser`:
+```css
+// myApp.wasp
+
+action signUp {
+  fn: import { signUp } from "@ext/actions.js",
+  entities: [User]
+}
+```
+Although we won't be using `User` directly in the `signUp` action, we still need to declare in
+the action definition that this action is affecting `User` - that way Wasp can properly update caches
+of all queries that depend on `User` entity.
+
+```js
+// ext/actions.js
+import { createNewUser } from '@wasp/core/auth.js'
+
+export const signUp = async (args, context) => {
+  // Additional logic can be added here - e.g. requests to the outside services, logging
+  // or anything else needed when signing up a user.
+
+  await createNewUser({ email: args.email, password: args.password })
+}
+```
+
+Having defined `signUp` action as above, we can use in the frontend as defined in the Action section.
+
+#### Login
+Wasp provides an action for logging in the user, `login`.
+
+### `login()`
+```js
+login(email, password)
+```
+#### `email: string`
+Email of the user logging in.
+
+#### `password: string`
+Password of the user logging in.
+
+#### `import statement`:
+```js
+import login from @wasp/auth/login.js
+```
+
+Login is a regular action so it can be used directly from the frontend. Take a look [here](https://github.com/wasp-lang/wasp/blob/master/waspc/examples/todoApp/ext/pages/Login.js#L17) for the example of using `login` within a simple login form component.
+
+#### Log out
+Wasp provides an action for logging out the user, `logout`.
+
+### `logout()`
+```js
+logout()
+```
+
+#### `import statement`:
+```js
+import logout from @wasp/auth/logout.js
+```
+
+##### Example of usage:
+```js
+import logout from '@wasp/auth/logout.js'
+
+const SignOut = () => {
+  return (
+    <button onClick={logout}>Logout</button>
+  )
+}
+```
+
+#### Reset password
+Coming soon.
+
+### Accessing currently logged in user
+When authentication is enabled in a Wasp app, we need a way to tell whether a user is logged in and access its data.
+With that, we can further implement access control and decide which content is private and which public.
+
+#### On client
+On client, Wasp provides `useAuth` React hook to be used within the functional components.
+`useAuth` is actually a thin wrapper over Wasp's `useQuery` hook and returns data in the exactly same
+format.
+
+### `useAuth()`
+#### `import statement`:
+```js
+import useAuth from @wasp/auth/useAuth.js
+```
+
+##### Example of usage:
+```js
+import React from 'react'
+
+import { Link } from 'react-router-dom'
+import useAuth from '@wasp/auth/useAuth.js'
+import logout from '@wasp/auth/logout.js'
+import Todo from '../Todo.js'
+import '../Main.css'
+
+const Main = () => {
+  const { data: user } = useAuth()
+
+  if (!user) {
+    return (
+      <span>
+        Please <Link to='/login'>login</Link> or <Link to='/signup'>sign up</Link>.
+      </span>
+    )
+  } else {
+    return (
+      <>
+        <button onClick={logout}>Logout</button>
+        <Todo />
+      < />
+    )
+  }
+}
+
+export default Main
+```
+
+#### On server
+
+When authentication is enabled, all the operations (actions and queries) will have `user` object
+present in the `context` argument. `context.user` will contain all the fields from the user entity
+except for the password.
+
+##### Example of usage:
+```js
+import HttpError from '@wasp/core/HttpError.js'
+
+export const createTask = async (task, context) => {
+  if (!context.user) {
+    throw new HttpError(403)
+  }
+
+  const Task = context.entities.Task
+  return Task.create({
+    data: {
+      description: task.description,
+      user: {
+        connect: { id: context.user.id }
+      }
+    }
+  })
+}
+```
+In order to implement access control, each operation is responsible for checking `context.user` and
+acting accordingly - e.g. if `context.user` is `undefined` and the operation is private then user
+should be denied access to it.
