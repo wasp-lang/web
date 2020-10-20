@@ -277,7 +277,7 @@ More differences and action/query specific features will come in the future vers
 
 ## Dependencies
 
-You can specify additional npm dependencies in following way, in your *.wasp file:
+You can specify additional npm dependencies in following way, in your `*.wasp` file:
 
 ```
 dependencies {=json
@@ -334,9 +334,7 @@ import { createNewUser } from @wasp/core/auth.js
 ```
 
 Here is a minimal example of a signup action invoking `createNewUser`:
-```css
-// myApp.wasp
-
+```css title="myApp.wasp"
 action signUp {
   fn: import { signUp } from "@ext/actions.js",
   entities: [User]
@@ -346,8 +344,7 @@ Although we won't be using `User` directly in the `signUp` action, we still need
 the action definition that this action is affecting `User` - that way Wasp can properly update caches
 of all queries that depend on `User` entity.
 
-```js
-// ext/actions.js
+```js title="ext/actions.js"
 import { createNewUser } from '@wasp/core/auth.js'
 
 export const signUp = async (args, context) => {
@@ -423,7 +420,7 @@ import useAuth from @wasp/auth/useAuth.js
 ```
 
 ##### Example of usage:
-```js
+```js title="ext/MainPage.js"
 import React from 'react'
 
 import { Link } from 'react-router-dom'
@@ -461,7 +458,7 @@ present in the `context` argument. `context.user` will contain all the fields fr
 except for the password.
 
 ##### Example of usage:
-```js
+```js title="ext/actions.js"
 import HttpError from '@wasp/core/HttpError.js'
 
 export const createTask = async (task, context) => {
