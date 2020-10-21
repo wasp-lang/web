@@ -1,6 +1,6 @@
 module.exports = {
-  title: 'My Site',
-  tagline: 'The tagline of my site',
+  title: 'Wasp',
+  tagline: 'A programming language that understands what a web app is.',
   url: 'https://wasp-lang.github.io',
   baseUrl: '/web/',
   onBrokenLinks: 'throw',
@@ -17,14 +17,39 @@ module.exports = {
       },
       items: [
         {
+          to: '#join-the-list',
+          label: 'Join the list',
+          position: 'right',
+          className: 'navbar-item-email-signup navbar-item-inner'
+        },
+        {
+          to: '#how-it-works',
+          label: 'How it works',
+          position: 'right',
+          className: 'navbar-item-inner'
+        },
+        {
+          to: '#the-language',
+          label: 'The Language',
+          position: 'right',
+          className: 'navbar-item-inner'
+        },
+        {
           to: 'docs/',
           activeBasePath: 'docs',
           label: 'Docs',
-          position: 'left',
+          position: 'right',
+          className: 'navbar-item-outside'
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
-          label: 'GitHub',
+          href: 'https://blog.wasp-lang.dev/',
+          label: 'Blog',
+          position: 'right',
+          className: 'navbar-item-outside'
+        },
+        {
+          href: 'https://github.com/wasp-lang/wasp',
+          className: 'navbar-item-github',
           position: 'right',
         },
       ],
