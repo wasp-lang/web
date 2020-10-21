@@ -92,7 +92,7 @@ Since our TodoApp is all about tasks, our first step will be to define Task enti
 ```c title="main.wasp"
 // ...
 
-entityPSL Task {=psl
+entity Task {=psl
     id          Int     @id @default(autoincrement())
     description String
     isDone      Boolean @default(false)

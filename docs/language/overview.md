@@ -46,7 +46,7 @@ action createTask {
   entities: [Task]
 }
 
-entityPSL Task {=psl
+entity Task {=psl
   id          Int     @id @default(autoincrement())
   description String
   isDone      Boolean @default(false)

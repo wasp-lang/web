@@ -118,13 +118,13 @@ database functionality and currently provides only a thin layer above it.
 Each `Entity` element corresponds 1-to-1 to Prisma data model and is defined in a following way:
 
 ```css
-entityPSL Task {=psl
+entity Task {=psl
     id          Int     @id @default(autoincrement())
     description String
     isDone      Boolean @default(false)
 psl=}
 ```
-#### `entityPSL: identifier`
+#### `entity: identifier`
 Name of the entity.
 
 #### `{=psl ... psl=}: PSL`
