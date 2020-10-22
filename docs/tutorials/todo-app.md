@@ -46,7 +46,7 @@ You will be seeing a lot of different output from client, server and database se
 Once ready, a new tab should open in your browser, at localhost:3000, a white page saying "Hello world!".
 
 Let's quickly inspect existing code. We can start with the main (and only) .wasp file:
-```css title="main.wasp"
+```c title="main.wasp"
 app TodoApp {
   title: "TodoApp"
 }
@@ -67,7 +67,7 @@ Let's see what is hapenning here:
    should be rendered on url `/`, effectively making it a default page.
 
 Let's check that React component that we referenced in `page Main` declaration:
-```js title="ext/MainPage.js"
+```jsx title="ext/MainPage.js"
 import React from 'react'
 
 const MainPage = () => {
@@ -91,7 +91,6 @@ Now, let's start shaping the app into a Todo App.
 Since our TodoApp is all about tasks, our first step will be to define Task entity in Wasp:
 ```c title="main.wasp"
 // ...
-
 entity Task {=psl
     id          Int     @id @default(autoincrement())
     description String
@@ -117,9 +116,8 @@ Queries are here when we need to fetch/read something, while actions are here wh
 In our case, we will write a query, since we are just listing tasks and not modifying anything.
 
 First, let's declare `getTasks` [query](language/basic-elements.md#query) in Wasp:
-```css title="main.wasp"
+```c title="main.wasp"
 // ...
-
 query getTasks {
   fn: import { getTasks } from "@ext/queries.js",
   entities: [Task]
@@ -144,7 +142,7 @@ NOTE: Queries and actions are NodeJS and execute on server.
 
 Finally, let's use the query in our React component to list the tasks:
 
-```js {3-4,7-16,19-32} title="ext/MainPage.js"
+```jsx {3-4,7-16,19-32} title="ext/MainPage.js"
 import React from 'react'
 
 import getTasks from '@wasp/queries/getTasks'
@@ -205,9 +203,8 @@ To enable creation of new tasks, we will need two things:
 Creating an action is very similar to creating a query.
 
 First we declare the action in Wasp:
-```css title="main.wasp"
+```c title="main.wasp"
 // ...
-
 action createTask {
   fn: import { createTask } from "@ext/actions.js",
   entities: [Task]
@@ -226,7 +223,7 @@ NOTE: We put it in new file `ext/actions.js`, but we could have put it anywhere 
 
 ### React form
 
-```js {5,12,37-61} title="ext/MainPage.js"
+```jsx {5,12,37-61} title="ext/MainPage.js"
 import React, { useState } from 'react'
 
 import { useQuery } from '@wasp/queries'
@@ -313,7 +310,6 @@ For that, we will need to do two things:
 We declare Wasp action:
 ```c title="main.wasp"
 // ...
-
 action updateTask {
   fn: import { updateTask } from "@ext/actions.js",
   entities: [Task]
@@ -323,7 +319,6 @@ action updateTask {
 We define JS implementation of Wasp action in `ext/actions.js` file:
 ```js title="ext/actions.js"
 // ...
-
 export const updateTask = async (args, context) => {
   return context.entities.Task.update({
     where: { id: args.taskId },
@@ -335,7 +330,7 @@ export const updateTask = async (args, context) => {
 ```
 
 And we update React component:
-```js {2,7-16,23} title="ext/MainPage.js"
+```jsx {2,7-16,23} title="ext/MainPage.js"
 // ...
 import updateTask from '@wasp/actions/updateTask'
 
@@ -364,7 +359,6 @@ const Task = (props) => {
     </div>
   )
 }
-
 // ...
 ```
 
@@ -374,17 +368,16 @@ What is a Todo app without some clocks!? Well, still a Todo app, but certainly n
 
 So, let's add a couple of clocks to our app, to help us track time while we perform our tasks (and to demonstrate a couple more of Wasp features :)).
 
-For this, we will use `react-clock` library from NPM. We can add it to our project as a [dependency](http://localhost:3000/web/docs/language/basic-elements#dependencies) like this:
-```css title="main.wasp"
+For this, we will use `react-clock` library from NPM. We can add it to our project as a [dependency](language/basic-elements.md#dependencies) like this:
+```c title="main.wasp"
 // ...
-
 dependencies {=json
   "react-clock": "3.0.0"
 json=}
 ```
 
 Next, let's create a `Clocks` component where we can play with the clocks.
-```js title="ext/Clocks.js"
+```jsx title="ext/Clocks.js"
 import React, { useEffect, useState } from 'react'
 import Clock from 'react-clock'
 import 'react-clock/dist/Clock.css'
@@ -407,7 +400,7 @@ export default () => {
 ```
 
 And let's import it in our main React component.
-```js {2,13} title="ext/MainPage.js"
+```jsx {2,13} title="ext/MainPage.js"
 // ...
 import Clocks from './Clocks'
 
@@ -427,10 +420,285 @@ const MainPage = () => {
     </div>
   )
 }
-
 // ...
 ```
 As you can see, importing other files from `/ext` is completely normal, just use relative path.
+
+
+## User + authentication
+
+Most of the apps today are multi-user, and Wasp has first-class support for it, so let's see how to add it to our Todo app!
+
+Let's define a Todo list (Todo list for a Todo list - meta :D) to get this done:
+- [ ] Add Wasp entity `User`.
+- [ ] Add `auth` Wasp declaration.
+- [ ] Create `signUp` action.
+- [ ] Create `Auth` page where users will login/signup (React component + Wasp page declaration + Wasp route declaration).
+- [ ] Modify `ext/MainPage.js` so that it requires login/signup.
+- [ ] Add Prisma relation between `User` and `Task` entities.
+- [ ] Modify our queries and actions so that they work only with the tasks belonging to the authenticated user.
+- [ ] Add logout button.
+
+First, let's define entity `User`:
+```c title="main.wasp"
+// ...
+entity User {=psl
+    id          Int     @id @default(autoincrement())
+    email       String  @unique
+    password    String
+psl=}
+// ...
+```
+
+Next, we want to tell Wasp that we want [authentication](language/basic-elements.md#authentication--authorization) (via email and password) in our app, and that it should use entity `User` for it. `auth` expects given entity to have `email: String` and `password: String` fields, which `User` has.
+
+We do that by adding the `auth` declaration:
+```c title="main.wasp"
+// ...
+auth {
+  userEntity: User,
+  methods: [ EmailAndPassword ]
+}
+// ...
+```
+What this means for us is that Wasp now offers us:
+- Function `createNewUser()` on client.
+- Actions `login()` and `logout()`.
+- React hook `useAuth()`.
+- `context.user` when in query/action.
+
+Before we start with writing React, let's first add one more action: `signUp`.
+It will be just a wrapper for `createNewUser()` for now, but it does one important thing: it declares that it uses `User` entity, so our queries will be correctly updated/invalidated when we sign up new user via `signUp` action.
+```c title="main.wasp"
+// ...
+action signUp {
+  fn: import { signUp } from "@ext/actions.js",
+  entities: [User]
+}
+// ...
+```
+
+```js title="ext/actions.js"
+// ...
+import { createNewUser } from '@wasp/core/auth.js'
+
+// ...
+
+export const signUp = async ({ email, password }, context) => {
+  await createNewUser({ email, password })
+}
+```
+Ok, that was easy!
+
+To recap, so far we have created:
+- `User` entity.
+- `auth` declaration thanks to which Wasp gives us plenty of auth functionality.
+- `signUp` action, via which we can create new user.
+
+Now, let's consider how are we going to handle the situation when user is not logged in.
+What we can do is check in the MainPage.js if user is logged in.
+If not, we will instruct them to go to the special `/auth` page where they can sign up or log in.
+If they succeed, we will send them back to the `/` (MainPage.js).
+While approach like this would be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
+
+First, let's define the `Auth` page, where we will use `signUp` and `login` actions to signup/login a new user.
+
+`Auth` page declaration in Wasp:
+```c title="main.wasp"
+// ...
+route "/auth" -> page Auth 
+page Auth {
+    component: import AuthPage from "@ext/AuthPage.js"
+}
+// ...
+```
+
+`Auth` page React component (lot of code, but most of it is just form):
+```jsx title="ext/AuthPage.js"
+import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
+
+import signUp from '@wasp/actions/signUp.js'
+import login from '@wasp/auth/login.js'
+
+export default () => {
+  const [method, setMethod] = useState('login')
+
+  const toggleMethod = () => {
+    setMethod(method === 'login' ? 'signup' : 'login')
+  }
+
+  return (
+    <>
+      <AuthForm method={method} />
+      <a href='javascript:;' onClick={toggleMethod}>
+        {method === 'login'
+          ? 'I don\'t have an account yet (go to sign up).'
+          : 'I already have an account (go to log in).'}
+      </a>
+    </>
+  )
+}
+
+const AuthForm = (props) => {
+  const history = useHistory()
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    try {
+      if (props.method === 'signup') {
+        await signUp({ email, password })
+      }
+      await login(email, password)
+      history.push('/')
+    } catch (err) {
+      window.alert('Error:' + err.message)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <h2>Email</h2>
+      <input
+        type='text'
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+      />
+      <h2>Password</h2>
+      <input
+        type='password'
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+      />
+      <div>
+        <input type='submit' value={props.method === 'signup' ? 'Sign up' : 'Log in'} />
+      </div>
+    </form>
+  )
+}
+```
+
+Finally, let's modify `MainPage.js` so that it sends user to Auth page if they are not logged in:
+```jsx {2-3,8-11} title="ext/MainPage.js"
+// ...
+import { Link } from 'react-router-dom'
+import useAuth from '@wasp/auth/useAuth.js'
+// ...
+
+const MainPage = () => {
+  // ...
+  const { data: user } = useAuth()
+  if (!user) {
+    return <span> Please <Link to='/auth'>log in</Link>. </span>
+  }
+  // ...
+}
+// ...
+```
+
+Ok, time to try out how this works!
+
+Since we modified entities (added `User` entity), we need to first run `wasp db migrate-save "added-user"`.
+Now, we can run `wasp start` as usual.
+
+Try going to `/` in our web app -> it will now ask you to log in, and if you follow the link, you will end up at `/auth`.
+Once you log in or sign up, you will be sent back to `/` and you will see the todo list.
+
+However, you will notice, if you try logging in with different users and creating tasks, that all users are still sharing tasks.
+That is because we did not yet update queries and actions to work only on current user's tasks, so let's do that next!
+
+First, let's define User-Task relation (check [prisma docs on relations](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations)):
+```c {6,13-14} title="main.wasp"
+// ...
+entity User {=psl
+    id          Int     @id @default(autoincrement())
+    email       String  @unique
+    password    String
+    tasks       Task[]
+psl=}
+// ...
+entity Task {=psl
+    id          Int     @id @default(autoincrement())
+    description String
+    isDone      Boolean @default(false)
+    user        User?    @relation(fields: [userId], references: [id])
+    userId      Int?
+psl=}
+// ...
+```
+NOTE: We made `user` and `userId` in `Task` optional (via `?`) because that allows us to keep the existing tasks, which don't have a user assigned, in the database.
+This is not recommended because it allows unwanted state in the database (what is the purpose of task not belonging to anybody?) and normally we would not make these fields optional.
+Instead, we would do a data migration to take care of those tasks, even if it means just dropping them all.
+However, for this tutorial, for the sake of simplicity, we will stick with this.
+
+Next, let's update the queries and actions to forbid access to non-authenticated users and to operate only on user's tasks:
+```js {1,4,6} title="ext/queries.js"
+import HttpError from '@wasp/core/HttpError.js'
+
+export const getTasks = async (args, context) => {
+  if (!context.user) { throw new HttpError(403) }
+  return context.entities.Task.findMany(
+    { where: { user: { id: context.user.id } } }
+  )
+}
+```
+
+```js {1,5,9,15,16,17} title="ext/actions.js"
+import HttpError from '@wasp/core/HttpError.js'
+import { createNewUser } from '@wasp/core/auth.js'
+
+export const createTask = async ({ description }, context) => {
+  if (!context.user) { throw new HttpError(403) }
+  return context.entities.Task.create({
+    data: {
+      description,
+      user: { connect: { id: context.user.id } }
+    }
+  })
+}
+
+export const updateTask = async ({ taskId, data }, context) => {
+  if (!context.user) { throw new HttpError(403) }
+  return context.entities.Task.updateMany({
+    where: { id: taskId, user: { id: context.user.id } },
+    data: { isDone: data.isDone }
+  })
+}
+
+export const signUp = async ({ email, password }, context) => {
+  await createNewUser({ email, password })
+}
+```
+
+NOTE: Due to how Prisma works, we had to convert `update` to `updateMany` in `updateTask` action to be able to specify user id in `where`.
+
+Right, that should be it!
+
+Again, let's run `wasp db migrate-save "user-task-relation"` to save changes we did to entities.
+Run `wasp start` and everything should work as expected now!
+Each user has their own tasks only they can see and edit.
+
+Last, but not the least, let's add logout functionality:
+```jsx {2,10} title="MainPage.js"
+// ...
+import logout from '@wasp/auth/logout.js'
+//...
+
+const MainPage = () => {
+  // ...
+  return (
+    <div>
+      // ...
+      <button onClick={logout}> Logout </button>
+    </div>
+  )
+}
+// ...
+```
+
+This is it, we have working authentication system and our app is multi-user!
 
 
 ## The End
@@ -446,6 +714,5 @@ You can check out the whole code of the app that we just built [here](https://gi
 
 If you are interested in what is Wasp actually generating in the background, you can check `.wasp/out/` directory in your project.
 
-<!-- TODO:
-  - Add images/gifs of web app, for each step?
--->
+
+<!-- TODO: Fun idea: At the start of tutorial, as soon as items can be added, add todo list item for each chapter in this tutorial, and then at the end of each chapter, we mark it as done. -->
