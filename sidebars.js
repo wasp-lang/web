@@ -32,7 +32,8 @@ module.exports = {
       label: 'Other',
       collapsed: false,
       items: [
-        'contributing'
+        'contributing',
+        'vision'
       ]
     }
   ]
