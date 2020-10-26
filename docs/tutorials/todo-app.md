@@ -48,7 +48,7 @@ Once ready, a new tab should open in your browser, at localhost:3000, a white pa
 Let's quickly inspect existing code. We can start with the main (and only) .wasp file:
 ```c title="main.wasp"
 app TodoApp {
-  title: "TodoApp"
+  title: "Todo app"
 }
 
 route "/" -> page Main
@@ -66,7 +66,7 @@ Let's see what is hapenning here:
 3. With [route](language/basic-elements.md#route) declaration, we defined that page `Main`
    should be rendered on url `/`, effectively making it a default page.
 
-Let's check that React component that we referenced in `page Main` declaration:
+Let's check out that React component that we referenced in the `page Main` declaration:
 ```jsx title="ext/MainPage.js"
 import React from 'react'
 
@@ -75,7 +75,7 @@ const MainPage = () => {
 }
 export default MainPage
 ```
-As we can see, this just a simple functional React component saying "Hello world!".
+As we can see, this is just a simple functional React component saying "Hello world!".
 
 That is all the code right now!
 Wasp in the background takes care of everything else needed to define, build and run a web app.

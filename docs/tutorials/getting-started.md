@@ -37,3 +37,5 @@ Execute the following commands in your terminal:
 4. Your app will be hosted at <http://localhost:3000>!
 
 That's it! You have successfully started a new web app and Wasp is for you serving both front-end and back-end.
+
+Next, check out our [Todo App tutorial](tutorials/todo-app.md).
