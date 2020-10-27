@@ -54,7 +54,6 @@
 }
 
 #signup {
-  background-color: #fff5cc;
   padding: 2rem 0;
 }
 
@@ -97,8 +96,14 @@ img.logo {
   max-height: 2rem;
 }
 
+html[data-theme='dark'] img.logo {
+  filter: invert(1)
+}
+
 img.wasp-diagram {
   max-height: 350px;
+  background: white;
+  padding: 30px;
 }
 
 h3 {
