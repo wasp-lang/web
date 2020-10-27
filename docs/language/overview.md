@@ -2,18 +2,18 @@
 title: Overview
 ---
 
-Wasp is a declarative language which recognizes web application-specific terms (e.g. *page* or *route*) as
+Wasp is a declarative language that recognizes web application-specific terms (e.g. *page* or *route*) as
 words of the language.
 
-The basic idea is that the higher-level overview of an app (e.g. pages, routes, database model, ...) is defined in a single `*.wasp` file, while the specific parts (web components, back-end queries, ...) are implemented in specific non-wasp technologies (React, NodeJS, Prisma) and then referenced in the `*.wasp` file.
+The basic idea is that the higher-level overview of an app (e.g. pages, routes, database model, ...) is defined in `*.wasp` files (for now just one), while the specific parts (web components, back-end queries, ...) are implemented in specific non-wasp technologies (React, NodeJS, Prisma) and then referenced in the `*.wasp` files.
 
 Basic structure of a Wasp project is:
-- single `*.wasp` file
+- `*.wasp` file
 - `ext/` directory -> Contains non-wasp code (JS, CSS, ...) structured in any way you want.
 
 When referencing code from `ext/` in your `*.wasp` file, you do it as `@ext/relative/path/of/file/in/ext/dir`.
 
-# Minimal example
+# Simple example
 
 ```yaml
 TodoApp/
@@ -24,9 +24,7 @@ TodoApp/
       - Main.js
 ```
 
-```css
-/* file: main.wasp */
-
+```css title="main.wasp"
 app todoApp {
   title: "ToDo App"
 }

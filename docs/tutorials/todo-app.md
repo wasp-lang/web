@@ -102,7 +102,7 @@ Since Wasp delegates database handling to [Prisma](https://www.prisma.io), defin
 
 After this change, we need to run
 ```shell-session
-$ wasp db migrate-save "New entity Task"
+$ wasp db migrate-save "added-task-entity"
 ```
 to have Prisma propagate the schema changes to the database.
 
@@ -110,12 +110,14 @@ to have Prisma propagate the schema changes to the database.
 
 Next, we want to admire our tasks, so let's list them!
 
-There are two ways to interact with entities in Wasp: [queries and actions (aka operations)](language/basic-elements.md#queries-and-actions-aka-operations).
+Main way of interacting with entities in Wasp is [operations (queries and actions)](language/basic-elements.md#queries-and-actions-aka-operations).
 
 Queries are here when we need to fetch/read something, while actions are here when we need to change/update something.
 In our case, we will write a query, since we are just listing tasks and not modifying anything.
 
-First, let's declare `getTasks` [query](language/basic-elements.md#query) in Wasp:
+First, let's implement `getTasks` [query](language/basic-elements.md#query).
+It consists of declaration in Wasp and implementation in JS.  
+Let's first write the declaration in Wasp:
 ```c title="main.wasp"
 // ...
 query getTasks {
@@ -124,10 +126,10 @@ query getTasks {
 }
 ```
 
-With this, we define Wasp query `getTasks` that uses (does something with) entity `Task`.
+With this, we define Wasp query `getTasks` that uses (does something with) entity `Task` (this is declared via `entities: [Task]`).
 We told Wasp that its implementation (which is an async JS function) can be found in `ext/queries.js`, exported as named export `getTasks`. NOTE: There is no rule that both JS function and Wasp query need to have the same name.
 
-Next, create a new file `ext/queries.js` and define the JS function that we just announced:
+Next, create a new file `ext/queries.js` and define the JS function that we just announced in the declaration above:
 
 ```js title="ext/queries.js"
 export const getTasks = async (args, context) => {
@@ -294,14 +296,14 @@ Here we call action directly (no hooks), since there is no reactivity that we ne
 This is it! Try creating a "Build a Todo App in Wasp" task and you will see it appear in the list below.
 
 ### Automatic invalidation/updating of queries
-You will notice that when you add a new task, list of tasks is automatically updated with that new task, althogh we have written no code to take care of that! Normally, you would have to do this explicitly, e.g. with react-query you would invalidate the getTasks query via its key, or would call its refetch() method.
+You will notice that when you create a new task, list of tasks is automatically updated with that new task, although we have written no code to take care of that! Normally, you would have to do this explicitly, e.g. with react-query you would invalidate the `getTasks` query via its key, or would call its `refetch()` method.
 
-The reason why getTasks query automatically updates when createTask action is executed is that Wasp is aware that both of them are working with Task entity, and therefore assumes that action that operates on Task (in this case createTask) might have changed the result of getTasks query. Therefore, in the background, Wasp nudges getTasks query to update. This means that out of the box, Wasp will make sure that all your queries that deal with entities are always in sync with any changes that actions might have done.
+The reason why `getTasks` query automatically updates when `createTask` action is executed is because Wasp is aware that both of them are working with `Task` entity, and therefore assumes that action that operates on `Task` (in this case `createTask`) might have changed the result of `getTasks` query. Therefore, in the background, Wasp nudges `getTasks** query to update. This means that out of the box, Wasp will make sure that all your queries that deal with entities are always in sync with any changes that actions might have done.
 
-NOTE: While kind of approach to automatic invalidation of queries is very convenient, it is in some situations wasteful and could become a performance bottleneck as app grows. In that case, you will be able to override this default behaviour and instead provide more detailed (and performant) instructions on how action should affect queries. This is not yet implemented, but is something we plan to do and you can track the progress [here](https://github.com/wasp-lang/wasp/issues/63).
+**NOTE**: While this kind of approach to automatic invalidation of queries is very convenient, it is in some situations wasteful and could become a performance bottleneck as app grows. In that case, you will be able to override this default behaviour and instead provide more detailed (and performant) instructions on how action should affect queries. This is not yet implemented, but is something we plan to do and you can track the progress [here](https://github.com/wasp-lang/wasp/issues/63) (or even contribute!).
 
 ## Updating tasks
-Todo app is not complete if you can't mark a task as done!
+Todo app would be very frustrating if you couldn't mark a task as done!
 
 For that, we will need to do two things:
 1. Implement Wasp action that updates the task.
@@ -361,6 +363,8 @@ const Task = (props) => {
 }
 // ...
 ```
+
+Aesome! We can tick this task as done ;).
 
 ## Clocks
 
@@ -429,7 +433,7 @@ As you can see, importing other files from `/ext` is completely normal, just use
 
 Most of the apps today are multi-user, and Wasp has first-class support for it, so let's see how to add it to our Todo app!
 
-Let's define a Todo list (Todo list for a Todo list - meta :D) to get this done:
+Let's define a Todo list (luckily we have an app for that now!) to get this done:
 - [ ] Add Wasp entity `User`.
 - [ ] Add `auth` Wasp declaration.
 - [ ] Create `signUp` action.
@@ -467,7 +471,7 @@ What this means for us is that Wasp now offers us:
 - React hook `useAuth()`.
 - `context.user` when in query/action.
 
-Before we start with writing React, let's first add one more action: `signUp`.
+Before we start with React, let's first add one more action: `signUp`.
 It will be just a wrapper for `createNewUser()` for now, but it does one important thing: it declares that it uses `User` entity, so our queries will be correctly updated/invalidated when we sign up new user via `signUp` action.
 ```c title="main.wasp"
 // ...
@@ -628,9 +632,10 @@ entity Task {=psl
 psl=}
 // ...
 ```
-NOTE: We made `user` and `userId` in `Task` optional (via `?`) because that allows us to keep the existing tasks, which don't have a user assigned, in the database.
-This is not recommended because it allows unwanted state in the database (what is the purpose of task not belonging to anybody?) and normally we would not make these fields optional.
-Instead, we would do a data migration to take care of those tasks, even if it means just dropping them all.
+
+**NOTE**: We made `user` and `userId` in `Task` optional (via `?`) because that allows us to keep the existing tasks, which don't have a user assigned, in the database.
+This is not recommended because it allows unwanted state in the database (what is the purpose of the task not belonging to anybody?) and normally we would not make these fields optional.
+Instead, we would do a data migration to take care of those tasks, even if it means just deleting them all.
 However, for this tutorial, for the sake of simplicity, we will stick with this.
 
 Next, let's update the queries and actions to forbid access to non-authenticated users and to operate only on user's tasks:
@@ -672,11 +677,11 @@ export const signUp = async ({ email, password }, context) => {
 }
 ```
 
-NOTE: Due to how Prisma works, we had to convert `update` to `updateMany` in `updateTask` action to be able to specify user id in `where`.
+**NOTE**: Due to how Prisma works, we had to convert `update` to `updateMany` in `updateTask` action to be able to specify user id in `where`.
 
 Right, that should be it!
 
-Again, let's run `wasp db migrate-save "user-task-relation"` to save changes we did to entities.
+We modified entities by adding User-Task relation, so let's run `wasp db migrate-save "user-task-relation"` to create a db schema migration.
 Run `wasp start` and everything should work as expected now!
 Each user has their own tasks only they can see and edit.
 
@@ -714,5 +719,10 @@ You can check out the whole code of the app that we just built [here](https://gi
 
 If you are interested in what is Wasp actually generating in the background, you can check `.wasp/out/` directory in your project.
 
-
-<!-- TODO: Fun idea: At the start of tutorial, as soon as items can be added, add todo list item for each chapter in this tutorial, and then at the end of each chapter, we mark it as done. -->
+Where from here?  
+Well, you could check the "Language" section of the docs for more details on specific parts of Wasp.  
+Or, you could try to build something on your own with Wasp!  
+You are likely to find that some feature that you want is missing, since Wasp is still in alpha.
+In that case, please write to us on [Discord](https://discord.gg/rzdnErX) or create an issue on [Github](https://github.com/wasp-lang/wasp), so we can learn which features to add.  
+Even beter, if you would like to contribute or help building the feature, let us know!
+You can find more details about contributing [here](contributing.md).
