@@ -6,7 +6,7 @@ module.exports = {
   onBrokenLinks: 'throw',
   favicon: 'img/favicon.ico',
   organizationName: 'wasp-lang', // Usually your GitHub org/user name.
-  projectName: '', // Usually your repo name.
+  projectName: 'web', // Usually your repo name.
   themeConfig: {
     sidebarCollapsible: false,
     navbar: {
