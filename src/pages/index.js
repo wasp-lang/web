@@ -60,7 +60,8 @@ function Feature({imageUrl, title, description}) {
 function PageBreakWithLogo() {
   return (
     <section className={'section-lg'}>
-      <div className="container" style={{ textAlign: 'center' }}>
+      <div className="container"
+           style={{ textAlign: 'center' }}>
         <img className="logo" src="img/eqpar-separator.png"/>
       </div>
     </section>
@@ -383,10 +384,6 @@ function Home() {
 
         <PageBreakWithLogo/>
 
-        <div id="join-the-list">
-          <EmailAndGithubCta/>
-        </div>
-
         {/* Wasp compilation */}
         <section className={'section-lg'} id="how-it-works">
           <div className="container">
@@ -488,7 +485,9 @@ function Home() {
           </div>
         </section>
 
+      <div id="join-the-list">
         <EmailAndGithubCta />
+      </div>
 
       </main>
     </Layout>
