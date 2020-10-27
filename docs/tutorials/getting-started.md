@@ -28,6 +28,9 @@ If you have never built Wasp before, this might take some time due to `stack` do
 
 Check [waspc/](https://github.com/wasp-lang/wasp/tree/master/waspc) for more details on building.
 
+## IDE support
+
+If you are using Visual Studio Code, install our [Wasp language extension](https://marketplace.visualstudio.com/items?itemName=wasp-lang.wasp)!
 
 ## Creating a new app
 Execute the following commands in your terminal:
