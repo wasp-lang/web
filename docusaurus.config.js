@@ -17,19 +17,19 @@ module.exports = {
       },
       items: [
         {
-          to: '#join-the-list',
+          to: '/#join-the-list',
           label: 'Join the list',
           position: 'right',
           className: 'navbar-item-email-signup navbar-item-inner'
         },
         {
-          to: '#how-it-works',
+          to: '/#how-it-works',
           label: 'How it works',
           position: 'right',
           className: 'navbar-item-inner'
         },
         {
-          to: '#the-language',
+          to: '/#the-language',
           label: 'The Language',
           position: 'right',
           className: 'navbar-item-inner'
@@ -64,35 +64,35 @@ module.exports = {
           title: 'Docs',
           items: [
             {
-              label: 'Style Guide',
-              to: 'docs/',
+              label: 'Getting started',
+              to: 'docs/tutorials/getting-started'
+            },
+            {
+              label: 'Todo app tutorial',
+              to: 'docs/tutorials/todo-app'
+            },
+            {
+              label: 'Reference',
+              to: 'docs/language/basic-elements'
             }
-          ],
+          ]
         },
         {
           title: 'Community',
           items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
               label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/docusaurus',
-            },
-          ],
+              href: 'https://discord.gg/rzdnErX'
+            }
+          ]
         },
         {
           title: 'More',
           items: [
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
-            },
+              href: 'https://github.com/wasp-lang/wasp'
+            }
           ],
         },
       ],
