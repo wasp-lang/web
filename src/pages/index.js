@@ -83,29 +83,27 @@ function CodeExamples() {
     if (currentCodeExample === CodeExample.NEW_APP) {
     const createAppWaspCode =
 `app todoApp {
-    title: "ToDo App"
+  title: "ToDo App"
 }
 
 route "/" -> page Main
 page Main {
-    component: import Main from "@ext/Main"
+  component: import Main from "@ext/Main"
 }
 `
 
     const createAppMainComponentCode =
 `import React from 'react'
 
-const Main = () => <span>Hello World!</span>
-
-export default Main
+export default () => <span> Hello World! </span>
 `
       return (
         <div className="codeExampleFiles">
-          <CodeBlockWithTitle title="todoApp.wasp" language={'css'}>
+          <CodeBlockWithTitle title="todoApp.wasp" language="css">
             { createAppWaspCode }
           </CodeBlockWithTitle>
 
-          <CodeBlockWithTitle title="ext/Main.js" language={'js'}>
+          <CodeBlockWithTitle title="ext/Main.js" language="jsx">
             { createAppMainComponentCode }
           </CodeBlockWithTitle>
 
@@ -118,17 +116,17 @@ export default Main
     } else if (currentCodeExample === CodeExample.ADD_AUTH) {
     const exampleCode =
 `app todoApp {
-    title: "ToDo App"
+  title: "ToDo App"
 }
 
 route "/" -> page Main
 page Main {
-    component: import Main from "@ext/Main"
+  component: import Main from "@ext/Main"
 }
 
 auth {
-    userEntity: User,
-    methods: [ EmailAndPassword ]
+  userEntity: User,
+  methods: [ EmailAndPassword ]
 }
 
 entity User {=psl
@@ -142,27 +140,26 @@ psl=}
 `import React from 'react'
 import { Link } from 'react-router-dom'
 import useAuth from '@wasp/auth/useAuth.js'
+import Todo from './Todo.js'
 
-const Main = () => {
+export default () => {
   const { data: user } = useAuth()
 
   if (!user) {
     return <span>
-        Please login or signup <Link to='/login'>here</Link>.
-    </span>
+             Please login or signup <Link to='/login'>here</Link>.
+           </span>
   } else {
     return <Todo/>
   }
 }
-
-export default Main
 `
       return (
         <div className="codeExampleFiles">
-          <CodeBlockWithTitle title="todoApp.wasp" language={'css'}>
+          <CodeBlockWithTitle title="todoApp.wasp" language="css">
             { exampleCode }
           </CodeBlockWithTitle>
-          <CodeBlockWithTitle title="ext/Main.js" language={'js'}>
+          <CodeBlockWithTitle title="ext/Main.js" language="jsx">
             { mainUsingAuthCode }
           </CodeBlockWithTitle>
 
@@ -174,7 +171,9 @@ export default Main
       )
     } else if (currentCodeExample === CodeExample.DEFINE_ENTITY) {
       const defineEntityWaspCode =
-`entity Task {=psl
+`//...
+
+entity Task {=psl
     id          Int     @id @default(autoincrement())
     description String
     isDone      Boolean @default(false)
@@ -187,10 +186,7 @@ query getTasks {
 `
       const getTasksQueryCode =
 `export const getTasks = async (args, context) => {
-  const Task = context.entities.Task
-  const tasks = await Task.findMany()
-
-  return tasks
+  return context.entities.Task.findMany()
 }
 `
       const todoUsingGetTasksCode =
@@ -198,23 +194,20 @@ query getTasks {
 import { useQuery } from '@wasp/queries'
 import getTasks from '@wasp/queries/getTasks.js'
 
-const Todo = () => {
-  const { data: tasks, isError, error: tasksError } = useQuery(getTasks)
-  return (
-    <Tasks tasks={tasks}/>
-  )
+export default () => {
+  const { data: tasks } = useQuery(getTasks)
+  return <Tasks tasks={tasks}/>
 }
-export default Todo
 `
       return (
         <div className="codeExampleFiles">
-          <CodeBlockWithTitle title="todoApp.wasp" language={'css'}>
+          <CodeBlockWithTitle title="todoApp.wasp" language="css">
             { defineEntityWaspCode }
           </CodeBlockWithTitle>
-          <CodeBlockWithTitle title="ext/queries.js" language="js">
+          <CodeBlockWithTitle title="ext/queries.js" language="jsx">
             { getTasksQueryCode }
           </CodeBlockWithTitle>
-          <CodeBlockWithTitle title="ext/Todo.js" language="js">
+          <CodeBlockWithTitle title="ext/Todo.js" language="jsx">
             { todoUsingGetTasksCode }
           </CodeBlockWithTitle>
 
@@ -346,7 +339,7 @@ function Home() {
                 'button button--outline button--secondary button--lg',
                 styles.getStarted,
               )}
-              to={useBaseUrl('docs/')}>
+              to={useBaseUrl('docs/tutorials/getting-started')}>
               Get Started
             </Link>
             <Link

@@ -2,25 +2,44 @@
 title: Getting Started
 ---
 
+import Tabs from '@theme/Tabs'
+import TabItem from '@theme/TabItem'
+
 ## Requirements
-Your Node.js version needs to be at least **12.18.0**. We recommend using
+You need to have Node.js installed and it needs to be at least **12.18.0**. We recommend using
 [nvm](https://github.com/nvm-sh/nvm) for managing your Node.js installation version(s).
 
 ## Installation
 
-### OS X / Linux
-The following command will execute an installation script that will download `wasp` binary and place
-it in your `PATH`:
+<Tabs
+  defaultValue='linux/osx'
+  values={[
+    {label: 'Linux / OS X', value: 'linux/osx'},
+    {label: 'Windows', value: 'win'},
+    {label: 'From source', value: 'source'}
+  ]
+}>
+  <TabItem value='linux/osx'>
+
+Run following command to download and install `wasp` binary:
 
 ```bash
 curl -sSL https://raw.githubusercontent.com/wasp-lang/wasp/master/waspc/tools/install.sh | sh
 ```
 
-### Windows
-With Wasp for Windows, we are almost there: Wasp is successfully compiling and running on Windows but there is a bug or two stopping it from fully working, check it out [here](https://github.com/wasp-lang/wasp/issues/48) if you are interested in helping.
+  </TabItem>
+  
+  <TabItem value='win'>
 
-### From source
-If installer is not working for you or your OS is not supported, you can build Wasp from source.
+With Wasp for Windows, we are almost there: Wasp is successfully compiling and running on Windows but there is a bug or two stopping it from fully working.
+
+Check it out [here](https://github.com/wasp-lang/wasp/issues/48) if you are interested in helping.
+
+  </TabItem>
+  
+  <TabItem value='source'>
+
+If installer is not working for you or your OS is not supported, you can try building Wasp from source.
 
 To install from source, you need to clone the [wasp repo](https://github.com/wasp-lang/wasp), install `stack` on your machine and then run `stack install` from the `waspc/` dir.
 
@@ -28,17 +47,23 @@ If you have never built Wasp before, this might take some time due to `stack` do
 
 Check [waspc/](https://github.com/wasp-lang/wasp/tree/master/waspc) for more details on building.
 
+  </TabItem>
+</Tabs>
+
+## Creating and running your first app
+Execute the following commands in your terminal:
+```shell-session
+$ wasp new MyNewApp # Creates a new web app named MyNewApp.
+$ cd MyNewApp
+$ wasp start # Serves the web app.
+```
+
+That's it! You have successfully created and served a new web app at <http://localhost:3000> and Wasp is serving both frontend and backend for you.
+
 ## IDE support
 
 If you are using Visual Studio Code, install our [Wasp language extension](https://marketplace.visualstudio.com/items?itemName=wasp-lang.wasp)!
 
-## Creating a new app
-Execute the following commands in your terminal:
-1. `wasp new MyNewApp` -> Creates new Wasp project named MyNewApp, in MyNewApp/ directory.
-2. `cd MyNewApp`
-3. `wasp start` -> Runs app in development mode.
-4. Your app will be hosted at <http://localhost:3000>!
+## What next?
 
-That's it! You have successfully started a new web app and Wasp is for you serving both front-end and back-end.
-
-Next, check out our [Todo App tutorial](tutorials/todo-app.md).
+Check out our [Todo App tutorial](tutorials/todo-app.md).
