@@ -225,7 +225,7 @@ NOTE: We put it in new file `ext/actions.js`, but we could have put it anywhere 
 
 ### React form
 
-```jsx {5,12,37-61} title="ext/MainPage.js"
+```jsx {1,5,12,37-61} title="ext/MainPage.js"
 import React, { useState } from 'react'
 
 import { useQuery } from '@wasp/queries'
@@ -247,15 +247,17 @@ const MainPage = () => {
   )
 }
 
-const Task = (props) => (
-  <div>
-    <input
-      type='checkbox' id={props.task.id}
-      checked={props.task.isDone} readonly
-    />
-    {props.task.description}
-  </div>
-)
+const Task = (props) => {
+  return (
+    <div>
+      <input
+        type='checkbox' id={props.task.id}
+        checked={props.task.isDone} readonly
+      />
+      {props.task.description}
+    </div>
+  )
+}
 
 const TasksList = (props) => {
   if (!props.tasks?.length) return 'No tasks'
@@ -604,7 +606,10 @@ const MainPage = () => {
 
 Ok, time to try out how this works!
 
-Since we modified entities (added `User` entity), we need to first run `wasp db migrate-save "added-user"`.
+Since we modified entities (added `User` entity), we need to first run
+```shell-session
+$ wasp db migrate-save "added-user"
+```
 Now, we can run `wasp start` as usual.
 
 Try going to `/` in our web app -> it will now ask you to log in, and if you follow the link, you will end up at `/auth`.
@@ -681,7 +686,11 @@ export const signUp = async ({ email, password }, context) => {
 
 Right, that should be it!
 
-We modified entities by adding User-Task relation, so let's run `wasp db migrate-save "user-task-relation"` to create a db schema migration.
+We modified entities by adding User-Task relation, so let's run
+```shell-session
+$ wasp db migrate-save "user-task-relation"
+```
+to create a db schema migration.
 Run `wasp start` and everything should work as expected now!
 Each user has their own tasks only they can see and edit.
 
