@@ -40,7 +40,7 @@
 }
 
 .hero-title {
-  font-size: 2.8rem;
+  font-size: 2.7rem;
 }
 
 .hero-subtitle {
@@ -53,7 +53,6 @@
     padding-bottom: var(--ifm-col-spacing-vertical);
   }
 }
-
 .docusaurus-highlight-code-line {
   background-color: rgb(0, 77, 91);
   display: block;
@@ -112,6 +111,12 @@ img.wasp-diagram {
   max-height: 350px;
   background: white;
   padding: 30px;
+}
+
+@media screen and (max-width: 996px) {
+  img.wasp-diagram {
+    padding: 0;
+  }
 }
 
 h3 {

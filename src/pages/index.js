@@ -35,8 +35,8 @@ const features = [
     //imageUrl: 'img/undraw_docusaurus_react.svg',
     description: (
       <>
-        If Wasp becomes too limiting for you, simply eject and continue with the source code
-        following industry best-practices, as if it was handwritten by a senior engineer.
+        If Wasp becomes too limiting for you, simply eject and continue with the human-readable
+        source code following industry best-practices.
       </>
     ),
   },
