@@ -39,6 +39,14 @@
   --ifm-col-spacing-vertical: 0.5rem;
 }
 
+.hero-title {
+  font-size: 2.8rem;
+}
+
+.hero-subtitle {
+  font-size: 1.3rem;
+}
+
 @media screen and (max-width: 996px) {
   .row .col {
     padding-top: var(--ifm-col-spacing-vertical);

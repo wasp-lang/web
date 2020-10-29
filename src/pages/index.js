@@ -330,14 +330,14 @@ function Home() {
       description="Description will go into a meta tag in <head />">
       <header className={clsx('hero', styles.heroBanner)}>
         <div className="container">
-          <h1 className="hero__title">Web App Specification Language</h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
+          <h1 className="hero-title">Web App Specification Language</h1>
+          <p className="hero-subtitle">{siteConfig.tagline}</p>
 
           <div className={styles.buttons}>
             <Link
               className={clsx(
                 'button button--outline button--secondary button--lg',
-                styles.getStarted,
+                styles.heroButton,
               )}
               to={useBaseUrl('docs/tutorials/getting-started')}>
               Get Started
@@ -345,7 +345,7 @@ function Home() {
             <Link
               className={clsx(
                 'button button--secondary button--lg',
-                styles.getStarted,
+                styles.heroButton,
               )}
               to={todoTutorialUrl}>
               Take the Tutorial
