@@ -24,7 +24,7 @@ You need to have Node.js installed and it needs to be at least **12.18.0**. We r
 Run following command to download and install `wasp` binary:
 
 ```bash
-curl -sSL https://raw.githubusercontent.com/wasp-lang/wasp/master/waspc/tools/install.sh | sh
+curl -sSL http://get.wasp-lang.dev | sh
 ```
 
   </TabItem>
