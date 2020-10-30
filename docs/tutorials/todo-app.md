@@ -11,7 +11,7 @@ Let's build a simple Todo App together in Wasp!
      style={{ border: "1px solid black" }}
 />
 
-If you haven't yet set up Wasp, check [Getting Started](tutorials/getting-started.md) first for installation instructions.
+If you haven't yet set up Wasp, check out [Getting Started](tutorials/getting-started.md) first for installation instructions.
 
 ## New project
 
@@ -110,13 +110,13 @@ to have Prisma propagate the schema changes to the database.
 
 Next, we want to admire our tasks, so let's list them!
 
-Main way of interacting with entities in Wasp is [operations (queries and actions)](language/basic-elements.md#queries-and-actions-aka-operations).
+The primary way of interacting with entities in Wasp is via [operations (queries and actions)](language/basic-elements.md#queries-and-actions-aka-operations).
 
 Queries are here when we need to fetch/read something, while actions are here when we need to change/update something.
 In our case, we will write a query, since we are just listing tasks and not modifying anything.
 
 First, let's implement `getTasks` [query](language/basic-elements.md#query).
-It consists of declaration in Wasp and implementation in JS.  
+It consists of a declaration in Wasp and implementation in JS (in `ext/` directory).
 Let's first write the declaration in Wasp:
 ```c title="main.wasp"
 // ...
@@ -137,12 +137,12 @@ export const getTasks = async (args, context) => {
 }
 ```
 
-All query functions in Wasp take `args` object as the first parameter and `context` object as the second parameter, where `args` are query arguments with which query is called, while `context` is additional stuff provided by Wasp.
+All query functions in Wasp take `args` object as the first parameter and `context` object as the second parameter, where `args` are query arguments with which the query is called with, while `context` is additional stuff provided by Wasp.
 Since we declared that query `getTasks` uses entity `Task`, Wasp injected [Prisma client](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/crud) for entity Task as `context.entities.Task`, which we then used to fetch all the tasks from the database.
 
-NOTE: Queries and actions are NodeJS and execute on server.
+NOTE: Queries and actions are NodeJS functions and execute on server.
 
-Finally, let's use the query in our React component to list the tasks:
+Finally, let's use the query we just created, `getTasks`, in our React component to list the tasks:
 
 ```jsx {3-4,7-16,19-32} title="ext/MainPage.js"
 import React from 'react'
@@ -181,12 +181,12 @@ const TasksList = (props) => {
 export default MainPage
 ```
 
-All of this is just normal React, except for the two special `@wasp` imports.
+All of this is just regular React, except for the two special `@wasp` imports.
 
 First import, `import getTasks from '@wasp/queries/getTasks'`, provides us with the wasp query `getTasks` that we previously defined in `main.wasp`.
-In general, rule for importing any Wasp query in JS is to import it as default import and to use `from` path of following shape: `@wasp/queries/<nameOfQuery>`.
+In general, the rule for importing any Wasp query in JS is to import it as a default import and to use `from` path of the following shape: `@wasp/queries/<nameOfQuery>`.
 
-While we can, once imported, call the query directly as `getTasks(args)`, that would not give us the reactivity that we need - we want React component to automatically re-render if result of `getTasks` query changes.
+While we can, once imported, call the query directly as `getTasks(args)`, that would not give us the reactivity that we need - we want React component to be automatically re-rendered if result of `getTasks` query changes.
 
 This is where second import comes in: `import { useQuery } from '@wasp/queries'`.
 It provides us with [useQuery](language/basic-elements.md#usequery) hook which is actually just a thin wrapper over [react-query](https://github.com/tannerlinsley/react-query) [useQuery](https://react-query.tanstack.com/docs/guides/queries) hook, behaving very similarly while offering some extra integration with Wasp, which we are going to cover later. By calling the query via this hook (`useQuery(getTasks)`), we get the reactivity that we wanted.
@@ -198,7 +198,7 @@ Next, let's create some tasks!
 ## Creating new tasks
 
 To enable creation of new tasks, we will need two things:
-1. Wasp action that creates new task.
+1. Wasp action that creates a new task.
 2. React form that calls that action.
 
 ### Wasp action
@@ -213,7 +213,7 @@ action createTask {
 }
 ```
 
-Next, we define JS function for that action:
+Next, we define a JS function for that action:
 ```js title="ext/actions.js"
 export const createTask = async (args, context) => {
   return context.entities.Task.create({
@@ -221,7 +221,7 @@ export const createTask = async (args, context) => {
   })
 }
 ```
-NOTE: We put it in new file `ext/actions.js`, but we could have put it anywhere we wanted, there are no limitations here, as long as import statement in Wasp file is correct and it is inside the `ext/` dir.
+NOTE: We put it in new file `ext/actions.js`, but we could have put it anywhere we wanted, there are no limitations here, as long as the import statement in Wasp file is correct and it is inside the `ext/` dir.
 
 ### React form
 
@@ -293,16 +293,16 @@ const NewTaskForm = (props) => {
 export default MainPage
 ```
 
-Here we call action directly (no hooks), since there is no reactivity that we need from it, which is also why we need to catch errors if there are any. The rest is just normal React code.
+Here we call our action directly (no hooks), since there is no reactivity that we need from it, which is also why we need to catch errors if there are any. The rest is just regular React code.
 
 This is it! Try creating a "Build a Todo App in Wasp" task and you will see it appear in the list below.
 
 ### Automatic invalidation/updating of queries
 You will notice that when you create a new task, list of tasks is automatically updated with that new task, although we have written no code to take care of that! Normally, you would have to do this explicitly, e.g. with react-query you would invalidate the `getTasks` query via its key, or would call its `refetch()` method.
 
-The reason why `getTasks` query automatically updates when `createTask` action is executed is because Wasp is aware that both of them are working with `Task` entity, and therefore assumes that action that operates on `Task` (in this case `createTask`) might have changed the result of `getTasks` query. Therefore, in the background, Wasp nudges `getTasks** query to update. This means that out of the box, Wasp will make sure that all your queries that deal with entities are always in sync with any changes that actions might have done.
+The reason why `getTasks` query automatically updates when `createTask` action is executed is because Wasp is aware that both of them are working with `Task` entity, and therefore assumes that action that operates on `Task` (in this case `createTask`) might have changed the result of `getTasks` query. Therefore, in the background, Wasp nudges `getTasks` query to update. This means that out of the box, Wasp will make sure that all your queries that deal with entities are always in sync with any changes that the actions might have done.
 
-**NOTE**: While this kind of approach to automatic invalidation of queries is very convenient, it is in some situations wasteful and could become a performance bottleneck as app grows. In that case, you will be able to override this default behaviour and instead provide more detailed (and performant) instructions on how action should affect queries. This is not yet implemented, but is something we plan to do and you can track the progress [here](https://github.com/wasp-lang/wasp/issues/63) (or even contribute!).
+**NOTE**: While this kind of approach to automatic invalidation of queries is very convenient, it is in some situations wasteful and could become a performance bottleneck as an app grows. In that case, you will be able to override this default behaviour and instead provide more detailed (and performant) instructions on how action should affect queries. This is not yet implemented, but is something we plan to do and you can track the progress [here](https://github.com/wasp-lang/wasp/issues/63) (or even contribute!).
 
 ## Updating tasks
 Todo app would be very frustrating if you couldn't mark a task as done!
@@ -366,7 +366,7 @@ const Task = (props) => {
 // ...
 ```
 
-Aesome! We can tick this task as done ;).
+Awesome! We can now tick this task as done ;).
 
 ## Clocks
 
@@ -428,7 +428,7 @@ const MainPage = () => {
 }
 // ...
 ```
-As you can see, importing other files from `/ext` is completely normal, just use relative path.
+As you can see, importing other files from `/ext` is completely normal, just use the relative path.
 
 
 ## User + authentication
@@ -468,7 +468,7 @@ auth {
 // ...
 ```
 What this means for us is that Wasp now offers us:
-- Function `createNewUser()` on client.
+- Function `createNewUser()` on server.
 - Actions `login()` and `logout()`.
 - React hook `useAuth()`.
 - `context.user` when in query/action.
@@ -499,7 +499,7 @@ Ok, that was easy!
 To recap, so far we have created:
 - `User` entity.
 - `auth` declaration thanks to which Wasp gives us plenty of auth functionality.
-- `signUp` action, via which we can create new user.
+- `signUp` action, via which we can create a new user.
 
 Now, let's consider how are we going to handle the situation when user is not logged in.
 What we can do is check in the MainPage.js if user is logged in.
@@ -734,4 +734,4 @@ Or, you could try to build something on your own with Wasp!
 You are likely to find that some feature that you want is missing, since Wasp is still in alpha.
 In that case, please write to us on [Discord](https://discord.gg/rzdnErX) or create an issue on [Github](https://github.com/wasp-lang/wasp), so we can learn which features to add.  
 Even beter, if you would like to contribute or help building the feature, let us know!
-You can find more details about contributing [here](contributing.md).
+You can find more details on contributing [here](contributing.md).
