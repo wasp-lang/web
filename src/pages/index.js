@@ -15,18 +15,18 @@ const features = [
     //imageUrl: 'img/undraw_docusaurus_mountain.svg',
     description: (
       <>
-        Create a production-ready web app from scratch with only a few lines
-        of concise, declarative code.
+        No more endless configuration files. Create a production-ready web app
+        with just a few lines of code - we will set you up with all the best defaults.
       </>
     ),
   },
   {
-    title: 'Flexible',
+    title: 'Speed & Power',
     //imageUrl: 'img/undraw_docusaurus_tree.svg',
     description: (
       <>
-        Move fast using high-level constructs provided by Wasp or
-      drop down to <code>js/html/css...</code> when you require more control.
+        Move fast using Wasp's declarative language, but also
+        drop down to <code>js/html/css...</code> when you require more control.
       </>
     ),
   },
@@ -297,7 +297,7 @@ function WaspGhStarsCount() {
 
 function EmailAndGithubCta() {
   return (
-    <section className={'section-lg'} id="signup">
+    <section className={'section-lg bg-diff'} id="signup">
       <div className="container">
 
         <div className={clsx('row', styles.responsiveCentered)}>
@@ -451,7 +451,7 @@ function Home() {
 
         {/* Features */}
         {features && features.length > 0 && (
-          <section className={styles.features}>
+          <section className={clsx(styles.features, 'bg-diff')}>
             <div className="container">
               <div className="row">
                 {features.map((props, idx) => (
