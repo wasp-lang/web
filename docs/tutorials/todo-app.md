@@ -610,7 +610,11 @@ Since we modified entities (added `User` entity), we need to first run
 ```shell-session
 $ wasp db migrate-save "added-user"
 ```
-Now, we can run `wasp start` as usual.
+
+Now, we can again run
+```shell-session
+$ wasp start
+```
 
 Try going to `/` in our web app -> it will now ask you to log in, and if you follow the link, you will end up at `/auth`.
 Once you log in or sign up, you will be sent back to `/` and you will see the todo list.
@@ -691,8 +695,12 @@ We modified entities by adding User-Task relation, so let's run
 $ wasp db migrate-save "user-task-relation"
 ```
 to create a db schema migration.
-Run `wasp start` and everything should work as expected now!
-Each user has their own tasks only they can see and edit.
+
+Run
+```shell-session
+$ wasp start
+``` 
+and everything should work as expected now! Each user has their own tasks only they can see and edit.
 
 Last, but not the least, let's add logout functionality:
 ```jsx {2,10} title="MainPage.js"
