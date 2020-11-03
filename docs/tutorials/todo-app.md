@@ -356,7 +356,7 @@ const Task = (props) => {
     <div>
       <input
         type='checkbox' id={props.task.id}
-        checked={props.task.isDone} readonly
+        checked={props.task.isDone}
         onChange={handleIsDoneChange}
       />
       {props.task.description}
