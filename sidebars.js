@@ -15,7 +15,15 @@ module.exports = {
       collapsed: false,
       items: [
         'tutorials/getting-started',
-        'tutorials/todo-app'
+        {
+          type: 'category',
+          label: 'Todo app',
+          collapsed: false,
+          items: [
+            'tutorials/todo-app/1-crud',
+            'tutorials/todo-app/2-dependencies-and-auth'
+          ]
+        }
       ]
     },
     {

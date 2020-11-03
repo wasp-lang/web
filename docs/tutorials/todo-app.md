@@ -382,7 +382,7 @@ dependencies {=json
 json=}
 ```
 
-Run (and if it is already running, stop it and run it again)
+Run (if it is already running, stop it first and then run it again)
 ```shell-session
 $ wasp start
 ```
