@@ -133,11 +133,11 @@ Before we start with React, let's first add one more action: `signUp`.
 It will be just a wrapper for `createNewUser()` for now, but it does one important thing: it declares that it uses `User` entity, so our queries will be correctly updated/invalidated when we sign up new user via `signUp` action.
 ```c title="main.wasp"
 // ...
+
 action signUp {
   fn: import { signUp } from "@ext/actions.js",
   entities: [User]
 }
-// ...
 ```
 
 ```js title="ext/actions.js"
@@ -162,6 +162,8 @@ What we can do is check in the MainPage.js if user is logged in.
 If not, we will instruct them to go to the special `/auth` page where they can sign up or log in.
 If they succeed, we will send them back to the `/` (MainPage.js).
 While approach like this would be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
+
+### Creating Auth page
 
 First, let's define the `Auth` page, where we will use `signUp` and `login` actions to signup/login a new user.
 
@@ -242,6 +244,8 @@ const AuthForm = (props) => {
 }
 ```
 
+### Updating Main page to check if user is authenticated
+
 Finally, let's modify `MainPage.js` so that it sends user to Auth page if they are not logged in:
 ```jsx {2-3,8-11} title="ext/MainPage.js"
 // ...
@@ -262,7 +266,6 @@ const MainPage = () => {
 
 Ok, time to try out how this works!
 
-
 Now, we can again run
 ```shell-session
 $ wasp start
@@ -273,6 +276,8 @@ Once you log in or sign up, you will be sent back to `/` and you will see the to
 
 However, you will notice, if you try logging in with different users and creating tasks, that all users are still sharing tasks.
 That is because we did not yet update queries and actions to work only on current user's tasks, so let's do that next!
+
+### Defining User-Task relation in entities
 
 First, let's define User-Task relation (check [prisma docs on relations](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations)):
 ```c {6,13-14} title="main.wasp"
@@ -294,10 +299,20 @@ psl=}
 // ...
 ```
 
-**NOTE**: We made `user` and `userId` in `Task` optional (via `?`) because that allows us to keep the existing tasks, which don't have a user assigned, in the database.
+We modified entities by adding User-Task relation, so let's run
+```shell-session
+$ wasp db migrate-save "user-task-relation"
+```
+to create a db schema migration.
+
+:::note
+We made `user` and `userId` in `Task` optional (via `?`) because that allows us to keep the existing tasks, which don't have a user assigned, in the database.
 This is not recommended because it allows unwanted state in the database (what is the purpose of the task not belonging to anybody?) and normally we would not make these fields optional.
 Instead, we would do a data migration to take care of those tasks, even if it means just deleting them all.
 However, for this tutorial, for the sake of simplicity, we will stick with this.
+:::
+
+### Updating operations to forbid access to non-authenticated users
 
 Next, let's update the queries and actions to forbid access to non-authenticated users and to operate only on user's tasks:
 ```js {1,4,6} title="ext/queries.js"
@@ -338,21 +353,19 @@ export const signUp = async ({ email, password }, context) => {
 }
 ```
 
-**NOTE**: Due to how Prisma works, we had to convert `update` to `updateMany` in `updateTask` action to be able to specify user id in `where`.
+:::note
+Due to how Prisma works, we had to convert `update` to `updateMany` in `updateTask` action to be able to specify user id in `where`.
+:::
 
 Right, that should be it!
-
-We modified entities by adding User-Task relation, so let's run
-```shell-session
-$ wasp db migrate-save "user-task-relation"
-```
-to create a db schema migration.
 
 Run
 ```shell-session
 $ wasp start
 ``` 
 and everything should work as expected now! Each user has their own tasks only they can see and edit.
+
+### Logout button
 
 Last, but not the least, let's add logout functionality:
 ```jsx {2,10} title="MainPage.js"
@@ -369,7 +382,6 @@ const MainPage = () => {
     </div>
   )
 }
-// ...
 ```
 
 This is it, we have working authentication system and our app is multi-user!
