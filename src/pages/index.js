@@ -68,6 +68,30 @@ function PageBreakWithLogo() {
   )
 }
 
+function HeroCodeExample() {
+  const createAppWaspCode =
+`app todoApp {
+  title: "ToDo App" /* visible in browser tab */
+}
+
+/* full-stack auth out-of-the-box */
+auth {
+  userEntity: User,
+  methods: [ EmailAndPassword ]
+}
+
+route "/" -> page Main
+page Main {
+  component: import Main from "@ext/Main" /* import React code */
+}
+`
+  return (
+    <CodeBlockWithTitle title="todoApp.wasp" language="css">
+      { createAppWaspCode }
+    </CodeBlockWithTitle>
+  )
+}
+
 function CodeExamples() {
   const CodeExample = Object.freeze({
     NEW_APP: 'Create a new app',
@@ -327,31 +351,41 @@ function Home() {
   return (
     <Layout
       title={`${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      description="Description will go into a meta tag in <head />"
+    >
       <header className={clsx('hero', styles.heroBanner)}>
         <div className="container">
-          <h1 className="hero-title">Web App Specification Language</h1>
-          <p className="hero-subtitle">{siteConfig.tagline}</p>
 
-          <div className={styles.buttons}>
-            <Link
-              className={clsx(
-                'button button--outline button--secondary button--lg',
-                styles.heroButton,
-              )}
-              to={useBaseUrl('docs/tutorials/getting-started')}>
-              Get Started
-            </Link>
-            <Link
-              className={clsx(
-                'button button--secondary button--lg',
-                styles.heroButton,
-              )}
-              to={todoTutorialUrl}>
-              Take the Tutorial
-            </Link>
-            <WaspGhStarsCount/>
-          </div>
+          <div className="row">
+            <div className="col col--5">
+              <h1 className="hero-title">Web App Specification Language</h1>
+              <p className="hero-subtitle">{siteConfig.tagline}</p>
+
+              <div className={styles.buttons}>
+                <Link
+                  className={clsx(
+                    'button button--outline button--secondary button--lg',
+                    styles.heroButton,
+                  )}
+                  to={useBaseUrl('docs/tutorials/getting-started')}>
+                  Get Started
+                </Link>
+                <Link
+                  className={clsx(
+                    'button button--secondary button--lg',
+                    styles.heroButton,
+                  )}
+                  to={todoTutorialUrl}>
+                  Take the Tutorial
+                </Link>
+              </div>
+              <WaspGhStarsCount/>
+            </div> {/* End of col. */}
+
+            <div className="col col--7">
+              <HeroCodeExample/>
+            </div>
+          </div> {/* End of row. */}
 
         </div>
       </header>
@@ -364,11 +398,13 @@ function Home() {
             <div className={clsx('row', styles.responsiveCentered)}>
               <div className="col col--10 col--offset-1">
                 <h3 className={'title'}>
-                  Wasp is a <span className="title-strong">declarative language</span> for building&nbsp;
-                  <span className="title-strong">full-stack web apps</span> with less code.
+                  Made for devs who want to <span className="title-strong">use modern web
+                  dev stack</span> (React, Node.js, Prisma)&nbsp;<br/>
+                  <span className="title-strong">without writing boilerplate</span>.
+
                 </h3>
                 <h3>
-                  <p>Front-end, back-end and deployment - all in one concise DSL.</p>
+                  <p>Front-end, back-end and deployment - all within one concise DSL.</p>
                 </h3>
               </div>
             </div>
@@ -386,12 +422,13 @@ function Home() {
                 <h2>How it works</h2>
                 <h3>
                   <p>
-                    Given <code>.wasp</code> files as an input, Wasp generates the full source code of your
-                    web app - front-end, back-end and deployment.
+                    Given <code>.wasp</code> files as an input, Wasp compiler&nbsp;
+                    <span className="title-strong">generates the full
+                    source code of your web app</span> - front-end, back-end and deployment.
                   </p>
                   <p>
-                    Wasp is used along with files written in standard web technologies - <code>.js(x)</code>,
-                    <code>.css</code>, ...
+                    Wasp also <span className="title-strong">integrates with the modern web
+                    dev technologies</span> - React, Node.js, CSS, ...
                   </p>
                 </h3>
               </div>

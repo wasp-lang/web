@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Wasp',
-  tagline: 'A programming language for building web apps.',
+  tagline: 'A programming language for building web apps with less code.',
   url: 'https://wasp-lang.github.io/web',
   baseUrl: '/',
   onBrokenLinks: 'throw',
