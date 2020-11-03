@@ -382,6 +382,12 @@ dependencies {=json
 json=}
 ```
 
+Run (and if it is already running, stop it and run it again)
+```shell-session
+$ wasp start
+```
+to have Wasp download and install new dependency.
+
 Next, let's create a `Clocks` component where we can play with the clocks.
 ```jsx title="ext/Clocks.js"
 import React, { useEffect, useState } from 'react'
