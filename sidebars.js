@@ -20,6 +20,7 @@ module.exports = {
           label: 'Todo app',
           collapsed: false,
           items: [
+            'tutorials/todo-app',
             'tutorials/todo-app/1-crud',
             'tutorials/todo-app/2-dependencies-and-auth'
           ]

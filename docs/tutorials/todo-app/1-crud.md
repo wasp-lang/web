@@ -4,19 +4,7 @@ title: "Basics"
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-Let's build a simple Todo App together in Wasp!
-
-<img alt="How Todo App will work once it is done"
-     src={useBaseUrl('img/todo-app-tutorial-intro.gif')}
-     style={{ border: "1px solid black" }}
-/>
-
-<br />
-<br />
-
-:::note
-If you haven't yet set up Wasp, check out [Getting Started](tutorials/getting-started.md) first for installation instructions, and then continue with the tutorial.
-:::
+Very first step on our journey is to create a Wasp project.
 
 ## New Wasp project
 
