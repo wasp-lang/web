@@ -4,10 +4,6 @@ title: "Authentication"
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-:::note
-We assume that you went through [Todo App: Basics](tutorials/todo-app/1-crud.md) and are continuing from there.
-:::
-
 Most of the apps today are multi-user, and Wasp has first-class support for it, so let's see how to add it to our Todo app!
 
 Let's define a Todo list (luckily we have an app for that now ;)) to get this done:
