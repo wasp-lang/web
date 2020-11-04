@@ -1,5 +1,5 @@
 ---
-title: "Dependencies and Auth"
+title: "Authentication"
 ---
 
 import useBaseUrl from '@docusaurus/useBaseUrl';
@@ -8,81 +8,9 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 We assume that you went through [Todo App: Basics](tutorials/todo-app/1-crud.md) and are continuing from there.
 :::
 
-## Dependencies
-
-What is a Todo app without some clocks!? Well, still a Todo app, but certainly not as fun as one with the clocks!
-
-So, let's add a couple of clocks to our app, to help us track time while we perform our tasks (and to demonstrate `dependencies` feature).
-
-For this, we will use `react-clock` library from NPM. We can add it to our project as a [dependency](language/basic-elements.md#dependencies) like this:
-```c title="main.wasp"
-// ...
-
-dependencies {=json
-  "react-clock": "3.0.0"
-json=}
-```
-
-Run (if it is already running, stop it first and then run it again)
-```shell-session
-$ wasp start
-```
-to have Wasp download and install new dependency.
-
-Next, let's create a `Clocks` component where we can play with the clocks.
-```jsx title="ext/Clocks.js"
-import React, { useEffect, useState } from 'react'
-import Clock from 'react-clock'
-import 'react-clock/dist/Clock.css'
-
-export default () => {
-  const [time, setTime] = useState(new Date())
-  
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date()), 1000)
-    return () => clearInterval(interval)
-  }, [])
-  
-  return (
-    <div style={{ display: 'flex' }}>
-      <Clock value={time} />
-      <Clock value={new Date(time.getTime() + 60 * 60000)} />
-    </div>
-  )
-}
-```
-
-And let's import it in our main React component.
-```jsx {2,13} title="ext/MainPage.js"
-// ...
-import Clocks from './Clocks'
-
-const MainPage = () => {
-  const { data: tasks, isFetching, error } = useQuery(getTasks)
-
-  return (
-    <div>
-      <NewTaskForm />
-
-      {tasks && <TasksList tasks={tasks} />}
-
-      <p> <Clocks /> </p>
-
-      {isFetching && 'Fetching...'}
-      {error && 'Error: ' + error}
-    </div>
-  )
-}
-// ...
-```
-As you can see, importing other files from `/ext` is completely normal, just use the relative path.
-
-
-## User + authentication
-
 Most of the apps today are multi-user, and Wasp has first-class support for it, so let's see how to add it to our Todo app!
 
-Let's define a Todo list (luckily we have an app for that now!) to get this done:
+Let's define a Todo list (luckily we have an app for that now ;)) to get this done:
 - [ ] Add Wasp entity `User`.
 - [ ] Add `auth` Wasp declaration.
 - [ ] Create `signUp` action.
@@ -92,7 +20,7 @@ Let's define a Todo list (luckily we have an app for that now!) to get this done
 - [ ] Modify our queries and actions so that they work only with the tasks belonging to the authenticated user.
 - [ ] Add logout button.
 
-### Adding entity User
+## Adding entity User
 First, let's define entity `User`:
 ```c title="main.wasp"
 // ...
@@ -110,7 +38,7 @@ $ wasp db migrate-save "added-user"
 ```
 to propagate the schema change (we added User).
 
-### Defining `auth` declaration
+## Defining `auth` declaration
 Next, we want to tell Wasp that we want full-stack [authentication](language/basic-elements.md#authentication--authorization) in our app, and that it should use entity `User` for it:
 
 ```c title="main.wasp"
@@ -128,7 +56,7 @@ What this means for us is that Wasp now offers us:
 - React hook `useAuth()`.
 - `context.user` when in query/action.
 
-### Implementing `signUp` action
+## Implementing `signUp` action
 Before we start with React, let's first add one more action: `signUp`.
 It will be just a wrapper for `createNewUser()` for now, but it does one important thing: it declares that it uses `User` entity, so our queries will be correctly updated/invalidated when we sign up new user via `signUp` action.
 ```c title="main.wasp"
@@ -163,7 +91,7 @@ If not, we will instruct them to go to the special `/auth` page where they can s
 If they succeed, we will send them back to the `/` (MainPage.js).
 While approach like this would be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
 
-### Creating Auth page
+## Creating Auth page
 
 First, let's define the `Auth` page, where we will use `signUp` and `login` actions to signup/login a new user.
 
@@ -244,7 +172,7 @@ const AuthForm = (props) => {
 }
 ```
 
-### Updating Main page to check if user is authenticated
+## Updating Main page to check if user is authenticated
 
 Finally, let's modify `MainPage.js` so that it sends user to Auth page if they are not logged in:
 ```jsx {2-3,8-11} title="ext/MainPage.js"
@@ -277,7 +205,7 @@ Once you log in or sign up, you will be sent back to `/` and you will see the to
 However, you will notice, if you try logging in with different users and creating tasks, that all users are still sharing tasks.
 That is because we did not yet update queries and actions to work only on current user's tasks, so let's do that next!
 
-### Defining User-Task relation in entities
+## Defining User-Task relation in entities
 
 First, let's define User-Task relation (check [prisma docs on relations](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations)):
 ```c {6,13-14} title="main.wasp"
@@ -312,7 +240,7 @@ Instead, we would do a data migration to take care of those tasks, even if it me
 However, for this tutorial, for the sake of simplicity, we will stick with this.
 :::
 
-### Updating operations to forbid access to non-authenticated users
+## Updating operations to forbid access to non-authenticated users
 
 Next, let's update the queries and actions to forbid access to non-authenticated users and to operate only on user's tasks:
 ```js {1,4,6} title="ext/queries.js"
@@ -365,7 +293,7 @@ $ wasp start
 ``` 
 and everything should work as expected now! Each user has their own tasks only they can see and edit.
 
-### Logout button
+## Logout button
 
 Last, but not the least, let's add logout functionality:
 ```jsx {2,10} title="MainPage.js"
@@ -385,25 +313,3 @@ const MainPage = () => {
 ```
 
 This is it, we have working authentication system and our app is multi-user!
-
-
-## The End
-
-We did it! For all those that followed the instructions closely and created "Build a Todo App in Wasp" task in our Todo App, let's celebrate by marking it as done :)!
-
-<img alt="Yay we are done with the Todo App tutorial!" 
-     src={useBaseUrl('img/todo-app-tutorial-end.gif')}
-     style={{ border: '1px solid black' }}
-/>
-
-You can check out the whole code of the app that we just built [here](https://github.com/wasp-lang/wasp/tree/master/examples/tutorials/TodoApp).
-
-If you are interested in what is Wasp actually generating in the background, you can check `.wasp/out/` directory in your project.
-
-Where from here?  
-Well, you could check the "Language" section of the docs for more details on specific parts of Wasp.  
-Or, you could try to build something on your own with Wasp!  
-You are likely to find that some feature that you want is missing, since Wasp is still in alpha.
-In that case, please write to us on [Discord](https://discord.gg/rzdnErX) or create an issue on [Github](https://github.com/wasp-lang/wasp), so we can learn which features to add.  
-Even beter, if you would like to contribute or help building the feature, let us know!
-You can find more details on contributing [here](contributing.md).

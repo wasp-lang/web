@@ -21,8 +21,21 @@ module.exports = {
           collapsed: false,
           items: [
             'tutorials/todo-app',
-            'tutorials/todo-app/1-crud',
-            'tutorials/todo-app/2-dependencies-and-auth'
+            {
+              type: 'category',
+              label: 'Basics',
+              collapsed: true,
+              items: [
+                'tutorials/todo-app/creating-new-project',
+                'tutorials/todo-app/task-entity',
+                'tutorials/todo-app/listing-tasks',
+                'tutorials/todo-app/creating-tasks',
+                'tutorials/todo-app/updating-tasks'
+              ]
+            },
+            'tutorials/todo-app/auth',
+            'tutorials/todo-app/dependencies',
+            'tutorials/todo-app/the-end'
           ]
         }
       ]
