@@ -17,15 +17,15 @@ entity Task {=psl
 psl=}
 ```
 
-Since Wasp delegates database handling to [Prisma](https://www.prisma.io), definition of entity comes down to defining [Prisma model](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model/), using PSL (Prisma Schema Language) inside the `{=psl psl=}` tags.
+Since Wasp uses [Prisma](https://www.prisma.io) as a database, definition of an entity comes down to defining a [Prisma model](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/data-model/), using PSL (Prisma Schema Language) inside the `{=psl psl=}` tags.
 
-After this change, we need to run
+After this change and before running `wasp start`, we first need to run:
 ```shell-session
-$ wasp db migrate-save "added-task-entity"
+$ wasp db migrate-save "Added task entity"
 ```
-to have Prisma save the db schema migration and propagate the schema changes to the database.
+This instructs Prisma to create a new database schema migration (you'll see a new directory `migrations/` appeared in the root dir of our app) and apply it to the database.
 
-To take a look at the database and the new `Task` schema, run
+To take a look at the database and the new `Task` schema, run:
 ```shell-session
 $ wasp db studio
 ```
@@ -35,5 +35,6 @@ $ wasp db studio
      style={{ border: "1px solid black" }}
 />
 
+Click on the specific entity (we have only `Task` for now) and check out its fields! We don't have any data yet in our database, but we are about the change that.
 
 

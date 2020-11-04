@@ -8,7 +8,7 @@ Todo app isn't done if you can't mark a task as done!
 
 For that, we will need to do two things:
 1. Implement Wasp action that updates the task.
-2. Modify React component so it calls that action.
+2. Modify our React code so it calls that action.
 
 ## Action
 
@@ -26,7 +26,7 @@ action updateTask {
 
 ### JS implementation
 
-We define JS implementation of Wasp action in `ext/actions.js` file:
+We define JS implementation of Wasp action in `ext/actions.js`:
 ```js title="ext/actions.js"
 // ...
 
@@ -42,7 +42,7 @@ export const updateTask = async (args, context) => {
 
 ## React logic
 
-And we update React component:
+And we update the React component:
 ```jsx {2,7-16,23} title="ext/MainPage.js"
 // ...
 import updateTask from '@wasp/actions/updateTask'

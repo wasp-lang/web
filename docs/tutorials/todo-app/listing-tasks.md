@@ -11,19 +11,19 @@ We want to admire our tasks, so let's list them!
 The primary way of interacting with entities in Wasp is via [operations (queries and actions)](language/basic-elements.md#queries-and-actions-aka-operations).
 
 Queries are here when we need to fetch/read something, while actions are here when we need to change/update something.
-In our case, we will write a query, since we are just listing tasks and not modifying anything.
+We will start with writing a query, since we are just listing tasks and not modifying anything for now.
 
 To list tasks, we will need two things:
-1. Wasp query that fetches all tasks.
-2. React logic that calls query and shows its results.
+1. Wasp query that fetches all the tasks from the database.
+2. React logic that calls our query and displays its results.
 
 ## Wasp query
 
-First, let's implement `getTasks` [query](language/basic-elements.md#query).
+Let's implement `getTasks` [query](language/basic-elements.md#query).
 It consists of a declaration in Wasp and implementation in JS (in `ext/` directory).
 
 ### Wasp declaration
-Add this to the `main.wasp` file:
+Add the following code to `main.wasp`:
 ```c title="main.wasp"
 // ...
 
@@ -31,13 +31,14 @@ query getTasks {
   // We specify that JS implementation of the query (which is an async JS function)
   // can be found in `ext/queries.js` as named export `getTasks`.
   fn: import { getTasks } from "@ext/queries.js",
-  // We tell Wasp that this query is doing something with entity `Task`.
+  // We tell Wasp that this query is doing something with entity `Task`. With that, Wasp will
+  // automatically refresh the results of this query when tasks change.
   entities: [Task]
 }
 ```
 
 ### JS implementation
-Next, create a new file `ext/queries.js` and define the JS function that we just announced in the declaration above:
+Next, create a new file `ext/queries.js` and define the JS function that we just imported in the `query` declaration above:
 
 ```js title="ext/queries.js"
 export const getTasks = async (args, context) => {
@@ -46,17 +47,17 @@ export const getTasks = async (args, context) => {
 ```
 
 Query function parameters:
-- `args`: `object`, query arguments with which the query is called with.
+- `args`: `object`, arguments the query is invoked with.
 - `context`: `object`, additional stuff provided by Wasp.
 
 
-Since we declared in main.wasp that our query uses entity Task, Wasp injected [Prisma client](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/crud) for entity Task as `context.entities.Task`, which we then used to fetch all the tasks from the database.
+Since we declared in `main.wasp` that our query uses entity Task, Wasp injected [Prisma client](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/crud) for entity Task as `context.entities.Task` - we used it above to fetch all the tasks from the database.
 
 :::info
-Queries and actions are NodeJS functions and execute on server.
+Queries and actions are NodeJS functions that are executed on the server.
 :::
 
-## Using query in React
+## Invoking query from React
 
 Finally, let's use the query we just created, `getTasks`, in our React component to list the tasks:
 
@@ -103,7 +104,7 @@ All of this is just regular React, except for the two special `@wasp` imports:
 
 While we could call query directly as `getTasks()`, calling it as `useQuery(getTasks)` gives us the reactivity (React component gets re-rendered if result of the query changes).
 
-With these changes, you should be seeing text "No tasks" on the screen.
+With these changes, you should be seeing text "No tasks" on the screen:
 
 <img alt="Todo App - No Tasks"
      src={useBaseUrl('img/todo-app-no-tasks.png')}

@@ -28,9 +28,9 @@ entity User {=psl
 psl=}
 ```
 
-Run
+Run:
 ```shell-session
-$ wasp db migrate-save "added-user"
+$ wasp db migrate-save "Added user"
 ```
 to propagate the schema change (we added User).
 
@@ -43,14 +43,14 @@ Next, we want to tell Wasp that we want full-stack [authentication](language/bas
 auth {
   // Expects entity User to have email:String and password:String fields.
   userEntity: User, 
-  methods: [ EmailAndPassword ]
+  methods: [ EmailAndPassword ] // More methods coming soon!
 }
 ```
 What this means for us is that Wasp now offers us:
-- Function `createNewUser()` on server (we can use it in actions).
+- Function `createNewUser()` on the server (we can use it in actions).
 - Actions `login()` and `logout()`.
 - React hook `useAuth()`.
-- `context.user` when in query/action.
+- `context.user` as an argument within query/action.
 
 ## Implementing `signUp` action
 Before we start with React, let's first add one more action: `signUp`.
@@ -71,7 +71,9 @@ import { createNewUser } from '@wasp/core/auth.js'
 // ...
 
 export const signUp = async ({ email, password }, context) => {
-  await createNewUser({ email, password })
+  // We could add some custom code here.
+
+  await createNewUser({ email, password }) // createNewUser will take care of hashing the password!
 }
 ```
 Ok, that was easy!
@@ -84,12 +86,12 @@ To recap, so far we have created:
 Now, let's consider how are we going to handle the situation when user is not logged in.
 What we can do is check in the MainPage.js if user is logged in.
 If not, we will instruct them to go to the special `/auth` page where they can sign up or log in.
-If they succeed, we will send them back to the `/` (MainPage.js).
-While approach like this would be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
+If they succeed, we will send them back to the `/` (`page Main`).
+While approach like this might be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
 
 ## Creating Auth page
 
-First, let's define the `Auth` page, where we will use `signUp` and `login` actions to signup/login a new user.
+First, let's define the `Auth` page, where we will use `signUp` and `login` actions to authenticate a new user.
 
 `Auth` page declaration in Wasp:
 ```c title="main.wasp"
@@ -101,7 +103,7 @@ page Auth {
 // ...
 ```
 
-`Auth` page React component (lot of code, but most of it is just form):
+`Auth` page React component (lots of code, but most of it is just form):
 ```jsx title="ext/AuthPage.js"
 import React, { useState } from 'react'
 import { useHistory } from 'react-router-dom'
@@ -203,7 +205,7 @@ That is because we did not yet update queries and actions to work only on curren
 
 ## Defining User-Task relation in entities
 
-First, let's define User-Task relation (check [prisma docs on relations](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations)):
+First, let's define User-Task (one-to-many) relation (check [prisma docs on relations](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-schema/relations)):
 ```c {6,13-14} title="main.wasp"
 // ...
 entity User {=psl
@@ -227,7 +229,7 @@ We modified entities by adding User-Task relation, so let's run
 ```shell-session
 $ wasp db migrate-save "user-task-relation"
 ```
-to create a db schema migration.
+to create a database schema migration and apply it to the database.
 
 :::note
 We made `user` and `userId` in `Task` optional (via `?`) because that allows us to keep the existing tasks, which don't have a user assigned, in the database.
@@ -238,7 +240,7 @@ However, for this tutorial, for the sake of simplicity, we will stick with this.
 
 ## Updating operations to forbid access to non-authenticated users
 
-Next, let's update the queries and actions to forbid access to non-authenticated users and to operate only on user's tasks:
+Next, let's update the queries and actions to forbid access to non-authenticated users and to operate only on currently logged in user's tasks:
 ```js {1,4,6} title="ext/queries.js"
 import HttpError from '@wasp/core/HttpError.js'
 

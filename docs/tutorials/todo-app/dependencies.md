@@ -23,7 +23,7 @@ $ wasp start
 ```
 to have Wasp download and install new dependency (that happens on start of `wasp start`).
 
-Next, let's create a `Clocks` component where we can play with the clocks.
+Next, let's create a new component `Clocks` where we can play with the clocks.
 ```jsx title="ext/Clocks.js"
 import React, { useEffect, useState } from 'react'
 import Clock from 'react-clock'
