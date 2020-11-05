@@ -9,6 +9,36 @@ import TabItem from '@theme/TabItem'
 You need to have Node.js installed and it needs to be at least **12.18.0**. We recommend using
 [nvm](https://github.com/nvm-sh/nvm) for managing your Node.js installation version(s).
 
+<details>
+  <summary style={{cursor: 'pointer', 'text-decoration': 'underline'}}>
+    Quick guide on installing/using nvm
+  </summary>
+  <p>
+
+  Install nvm via your OS package manager (aptitude, pacman, homebrew, ...) or alternatively via [nvm install script](https://github.com/nvm-sh/nvm#install--update-script).
+
+  Then, install a version of node that you need (any >= 12.18.0), e.g.:
+  ```shell-session
+  $ nvm install 12
+  ```
+
+  Finally, whenever you need to ensure specific version of node is used, run e.g.
+  ```shell-session
+  $ nvm use 12
+  ```
+  to set the node version for current shell session.
+
+  You can run
+  ```shell-session
+  $ nvm current
+  ```
+  to check the version of node currently being used in this shell session.
+
+  Check NVM repo for more details: https://github.com/nvm-sh/nvm .
+
+  </p>
+</details>
+
 ## Installation
 
 <Tabs
