@@ -200,6 +200,17 @@ $ wasp start
 Try going to `/` in our web app -> it will now ask you to log in, and if you follow the link, you will end up at `/auth`.
 Once you log in or sign up, you will be sent back to `/` and you will see the todo list.
 
+Let's now see how things look in the database! Run:
+```shell-session
+$ wasp db studio
+```
+<img alt="Database demonstration - password hashing"
+     src={useBaseUrl('img/wasp_db_hash_demonstration.gif')}
+     style={{ border: "1px solid black" }}
+/>
+
+We see there is a user and that its password is already hashed! Wasp took care of this for us.
+
 However, you will notice, if you try logging in with different users and creating tasks, that all users are still sharing tasks.
 That is because we did not yet update queries and actions to work only on current user's tasks, so let's do that next!
 
@@ -290,6 +301,17 @@ Run
 $ wasp start
 ``` 
 and everything should work as expected now! Each user has their own tasks only they can see and edit.
+
+Try playing around with our app, adding a few users and some tasks. Then run:
+```shell-session
+$ wasp db studio
+``` 
+<img alt="Database demonstration"
+     src={useBaseUrl('img/wasp_db_demonstration.gif')}
+     style={{ border: "1px solid black" }}
+/>
+
+You will see that each user has its own tasks, just as we specified in our code!
 
 ## Logout button
 
