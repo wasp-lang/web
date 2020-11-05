@@ -106,13 +106,15 @@ function CodeExamples() {
   function CurrentCodeExample() {
     if (currentCodeExample === CodeExample.NEW_APP) {
     const createAppWaspCode =
-`app todoApp {
-  title: "ToDo App"
+`/* global app settings */
+app todoApp {
+  title: "ToDo App" /* browser tab title */
 }
 
+/* routing */
 route "/" -> page Main
 page Main {
-  component: import Main from "@ext/Main"
+  component: import Main from "@ext/Main" /* import your React code */
 }
 `
 
@@ -127,7 +129,7 @@ export default () => <span> Hello World! </span>
             { createAppWaspCode }
           </CodeBlockWithTitle>
 
-          <CodeBlockWithTitle title="ext/Main.js" language="jsx">
+          <CodeBlockWithTitle title="ext/Main.js | External React code, imported above" language="jsx">
             { createAppMainComponentCode }
           </CodeBlockWithTitle>
 
@@ -139,20 +141,15 @@ export default () => <span> Hello World! </span>
       )
     } else if (currentCodeExample === CodeExample.ADD_AUTH) {
     const exampleCode =
-`app todoApp {
-  title: "ToDo App"
-}
+`/* ... */
 
-route "/" -> page Main
-page Main {
-  component: import Main from "@ext/Main"
-}
-
+/* full-stack auth out-of-the-box */
 auth {
   userEntity: User,
-  methods: [ EmailAndPassword ]
+  methods: [ EmailAndPassword ] /* more methods coming soon */
 }
 
+/* email & password required because of the auth method above */
 entity User {=psl
     id          Int     @id @default(autoincrement())
     email       String  @unique
@@ -167,6 +164,7 @@ import useAuth from '@wasp/auth/useAuth.js'
 import Todo from './Todo.js'
 
 export default () => {
+  // A hook provided by Wasp.
   const { data: user } = useAuth()
 
   if (!user) {
@@ -183,7 +181,7 @@ export default () => {
           <CodeBlockWithTitle title="todoApp.wasp" language="css">
             { exampleCode }
           </CodeBlockWithTitle>
-          <CodeBlockWithTitle title="ext/Main.js" language="jsx">
+          <CodeBlockWithTitle title="ext/Main.js | Checking if user is logged in" language="jsx">
             { mainUsingAuthCode }
           </CodeBlockWithTitle>
 
@@ -195,8 +193,9 @@ export default () => {
       )
     } else if (currentCodeExample === CodeExample.DEFINE_ENTITY) {
       const defineEntityWaspCode =
-`//...
+`/* ... */
 
+/* Data model is defined via Prisma Schema Language (PSL) */
 entity Task {=psl
     id          Int     @id @default(autoincrement())
     description String
@@ -204,12 +203,15 @@ entity Task {=psl
 psl=}
 
 query getTasks {
-  fn: import { getTasks } from "@ext/queries.js",
-  entities: [Task] // A list of entities this query uses.
+  fn: import { getTasks } from "@ext/queries.js", /* import Node.js function */
+  /* A list of entities this query uses - useful for automatic invalidation and refetching */
+  entities: [Task]
 }
 `
       const getTasksQueryCode =
 `export const getTasks = async (args, context) => {
+  // Since we above declared this query is using Task, it is automatically injected in the
+  // context.
   return context.entities.Task.findMany()
 }
 `
@@ -219,6 +221,7 @@ import { useQuery } from '@wasp/queries'
 import getTasks from '@wasp/queries/getTasks.js'
 
 export default () => {
+  // Standard useQuery syntax, Wasp provides a thin wrapper around it.
   const { data: tasks } = useQuery(getTasks)
   return <Tasks tasks={tasks}/>
 }
@@ -228,10 +231,13 @@ export default () => {
           <CodeBlockWithTitle title="todoApp.wasp" language="css">
             { defineEntityWaspCode }
           </CodeBlockWithTitle>
-          <CodeBlockWithTitle title="ext/queries.js" language="jsx">
+          <CodeBlockWithTitle
+            title="ext/queries.js | Node.js function imported in a query above"
+            language="jsx"
+          >
             { getTasksQueryCode }
           </CodeBlockWithTitle>
-          <CodeBlockWithTitle title="ext/Todo.js" language="jsx">
+          <CodeBlockWithTitle title="ext/Todo.js | Invoking query from React code" language="jsx">
             { todoUsingGetTasksCode }
           </CodeBlockWithTitle>
 
