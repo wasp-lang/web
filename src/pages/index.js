@@ -7,6 +7,7 @@ import EmailSignupForm from '../components/EmailSignupForm/index.js'
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
+import Head from '@docusaurus/Head';
 import styles from './styles.module.css';
 
 const features = [
@@ -69,6 +70,12 @@ function PageBreakWithLogo() {
 }
 
 function HeroCodeExample() {
+  // NOTE: There is an image in static/img/hero-code-shot.png of this code,
+  //   used as the main image of the web app (specified via <meta>) when being
+  // parsed by external sites (Facebook, Twitter, Reddit, ...).
+  // Therefore, if this example changes, you should also update that image
+  // (just take a screenshot).
+
   const createAppWaspCode =
 `app todoApp {
   title: "ToDo App" /* visible in browser tab */
@@ -359,6 +366,10 @@ function Home() {
       title={`${siteConfig.title}`}
       description={siteConfig.tagline}
     >
+      <Head>
+        <meta property="og:image" content={useBaseUrl('img/hero-code-shot.png')} />
+      </Head>
+
       <header className={clsx('hero', styles.heroBanner)}>
         <div className="container">
 
