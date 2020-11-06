@@ -367,7 +367,7 @@ function Home() {
       description={siteConfig.tagline}
     >
       <Head>
-        <meta property="og:image" content={useBaseUrl('img/hero-code-shot.png')} />
+        <meta property="og:image" content={siteConfig.url + useBaseUrl('img/hero-code-shot.png')} />
       </Head>
 
       <header className={clsx('hero', styles.heroBanner)}>
