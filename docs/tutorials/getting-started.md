@@ -4,11 +4,17 @@ title: Getting Started
 
 import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 ## Requirements
-You need to have Node.js installed and it needs to be at least **12.18.0**. We recommend using
-[nvm](https://github.com/nvm-sh/nvm) for managing your Node.js installation version(s).
 
+### Node.js
+
+**You need to have Node.js installed and it needs to be at least version 12.18.0.**
+
+We recommend using [nvm](https://github.com/nvm-sh/nvm) for managing your Node.js installation version(s).
+
+:::info
 <details>
   <summary style={{cursor: 'pointer', 'text-decoration': 'underline'}}>
     Quick guide on installing/using nvm
@@ -38,6 +44,8 @@ You need to have Node.js installed and it needs to be at least **12.18.0**. We r
 
   </p>
 </details>
+:::
+
 
 ## Installation
 
@@ -92,7 +100,10 @@ That's it! You have successfully created and served a new web app at <http://loc
 
 ## IDE support
 
-If you are using Visual Studio Code, install our [Wasp language extension](https://marketplace.visualstudio.com/items?itemName=wasp-lang.wasp)!
+###  Visual Studio Code
+
+<img width="20px" alt="Visual Studio Code logo" src={useBaseUrl('img/vscode-logo.png')} />
+&nbsp; If you are using Visual Studio Code, install our <a href="https://marketplace.visualstudio.com/items?itemName=wasp-lang.wasp">Wasp language extension</a>!
 
 ## What next?
 
