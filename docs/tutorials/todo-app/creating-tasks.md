@@ -120,7 +120,7 @@ Task is created on the server and also saved in the database. Try refreshing the
 />
 
 ## Side note: Automatic invalidation/updating of queries
-You will notice that when you create a new task, list of tasks is automatically updated with that new task, although we have written no code to take care of that! Normally, you would have to do this explicitly, e.g. with react-query you would invalidate the `getTasks` query via its key, or would call its `refetch()` method.
+You will notice that when you create a new task, the list of tasks is automatically updated with that new task, although we have written no code to take care of that! Normally, you would have to do this explicitly, e.g. with react-query you would invalidate the `getTasks` query via its key, or would call its `refetch()` method.
 
 The reason why `getTasks` query automatically updates when `createTask` action is executed is because Wasp is aware that both of them are working with `Task` entity, and therefore assumes that action that operates on `Task` (in this case `createTask`) might have changed the result of `getTasks` query. Therefore, in the background, Wasp nudges `getTasks` query to update. This means that **out of the box, Wasp will make sure that all your queries that deal with entities are always in sync with any changes that the actions might have done**.
 
