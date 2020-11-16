@@ -35,6 +35,6 @@ $ wasp db studio
      style={{ border: "1px solid black" }}
 />
 
-Click on the specific entity (we have only `Task` for now) and check out its fields! We don't have any data yet in our database, but we are about the change that.
+Click on the specific entity (we have only `Task` for now) and check out its fields! We don't have any data yet in our database, but we are about to change that.
 
 

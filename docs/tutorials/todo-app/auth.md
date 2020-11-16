@@ -83,8 +83,8 @@ To recap, so far we have created:
 - `auth` declaration thanks to which Wasp gives us plenty of auth functionality.
 - `signUp` action, via which we can create a new user.
 
-Now, let's consider how are we going to handle the situation when user is not logged in.
-What we can do is check in the MainPage.js if user is logged in.
+Now, let's consider how we are going to handle the situation when user is not logged in.
+What we can do is check in the `MainPage.js` if user is logged in.
 If not, we will instruct them to go to the special `/auth` page where they can sign up or log in.
 If they succeed, we will send them back to the `/` (`page Main`).
 While approach like this might be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
