@@ -212,7 +212,7 @@ For security reasons, all errors thrown in the query NodeJS function are sent to
 
 If you do want to throw an error that will pass some information to the client, you can use `HttpError` in your NodeJS query function:
 ```js
-import HttpError from '@wasp/core/HttpError'
+import HttpError from '@wasp/core/HttpError.js'
 
 export getTasks = async (args, context) => {
   const statusCode = 403
