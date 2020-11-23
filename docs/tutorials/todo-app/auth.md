@@ -9,9 +9,7 @@ Most of the apps today are multi-user, and Wasp has first-class support for it, 
 Let's define a Todo list (luckily we have an app for that now ;)) to get this done:
 - [ ] Add Wasp entity `User`.
 - [ ] Add `auth` Wasp declaration.
-- [ ] Create `signUp` action.
-- [ ] Create `Auth` page where users will login/signup (React component + Wasp page declaration + Wasp route declaration).
-- [ ] Modify `ext/MainPage.js` so that it requires login/signup.
+- [ ] Modify `ext/MainPage.js` so that it requires authentication.
 - [ ] Add Prisma relation between `User` and `Task` entities.
 - [ ] Modify our queries and actions so that they work only with the tasks belonging to the authenticated user.
 - [ ] Add logout button.
@@ -47,132 +45,31 @@ auth {
 }
 ```
 What this means for us is that Wasp now offers us:
-- Function `createNewUser()` on the server (we can use it in actions).
-- Actions `login()` and `logout()`.
+- Login and Signup pages located at `/login` and `/signup` routes, ready to be used.
+- `logout()` action.
 - React hook `useAuth()`.
 - `context.user` as an argument within query/action.
 
-## Implementing `signUp` action
-Before we start with React, let's first add one more action: `signUp`.
-It will be just a wrapper for `createNewUser()` for now, but it does one important thing: it declares that it uses `User` entity, so our queries will be correctly updated/invalidated when we sign up new user via `signUp` action.
-```c title="main.wasp"
-// ...
+This is a very high-level API for auth which makes it very easy to get started quickly, but is
+not very flexible. If you require more control (e.g. want to execute some custom code on the server
+during signup, check out [lower-level auth API](/docs/language/basic-elements#lower-level-api).
 
-action signUp {
-  fn: import { signUp } from "@ext/actions.js",
-  entities: [User]
-}
-```
-
-```js title="ext/actions.js"
-// ...
-import { createNewUser } from '@wasp/core/auth.js'
-
-// ...
-
-export const signUp = async ({ email, password }, context) => {
-  // We could add some custom code here.
-
-  await createNewUser({ email, password }) // createNewUser will take care of hashing the password!
-}
-```
 Ok, that was easy!
 
 To recap, so far we have created:
 - `User` entity.
 - `auth` declaration thanks to which Wasp gives us plenty of auth functionality.
-- `signUp` action, via which we can create a new user.
 
-Now, let's consider how we are going to handle the situation when user is not logged in.
+Now, let's consider how are we going to handle the situation when user is not logged in.
 What we can do is check in the `MainPage.js` if user is logged in.
-If not, we will instruct them to go to the special `/auth` page where they can sign up or log in.
-If they succeed, we will send them back to the `/` (`page Main`).
+If not, we will instruct them to to to `/login` page where they can sign up or go to `/signup` page where they can sign up.
+Both `/login` and `/signup` pages are already generated for us once we added `auth` declaration to our Wasp file.
+If they succeed, they will be sent back to the `/` (`page Main`).
 While approach like this might be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
-
-## Creating Auth page
-
-First, let's define the `Auth` page, where we will use `signUp` and `login` actions to authenticate a new user.
-
-`Auth` page declaration in Wasp:
-```c title="main.wasp"
-// ...
-route "/auth" -> page Auth 
-page Auth {
-    component: import AuthPage from "@ext/AuthPage.js"
-}
-// ...
-```
-
-`Auth` page React component (lots of code, but most of it is just form):
-```jsx title="ext/AuthPage.js"
-import React, { useState } from 'react'
-import { useHistory } from 'react-router-dom'
-
-import signUp from '@wasp/actions/signUp.js'
-import login from '@wasp/auth/login.js'
-
-export default () => {
-  const [method, setMethod] = useState('login')
-
-  const toggleMethod = () => {
-    setMethod(method === 'login' ? 'signup' : 'login')
-  }
-
-  return (
-    <>
-      <AuthForm method={method} />
-      <a href='javascript:;' onClick={toggleMethod}>
-        {method === 'login'
-          ? 'I don\'t have an account yet (go to sign up).'
-          : 'I already have an account (go to log in).'}
-      </a>
-    </>
-  )
-}
-
-const AuthForm = (props) => {
-  const history = useHistory()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    try {
-      if (props.method === 'signup') {
-        await signUp({ email, password })
-      }
-      await login(email, password)
-      history.push('/')
-    } catch (err) {
-      window.alert('Error:' + err.message)
-    }
-  }
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <h2>Email</h2>
-      <input
-        type='text'
-        value={email}
-        onChange={e => setEmail(e.target.value)}
-      />
-      <h2>Password</h2>
-      <input
-        type='password'
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-      />
-      <div>
-        <input type='submit' value={props.method === 'signup' ? 'Sign up' : 'Log in'} />
-      </div>
-    </form>
-  )
-}
-```
 
 ## Updating Main page to check if user is authenticated
 
-Finally, let's modify `MainPage.js` so that it sends user to Auth page if they are not logged in:
+Finally, let's modify `MainPage.js` so that it sends user to Login page if they are not logged in:
 ```jsx {2-3,8-11} title="ext/MainPage.js"
 // ...
 import { Link } from 'react-router-dom'
@@ -183,7 +80,7 @@ const MainPage = () => {
   // ...
   const { data: user } = useAuth()
   if (!user) {
-    return <span> Please <Link to='/auth'>log in</Link>. </span>
+    return <span> Please <Link to='/login'>log in</Link>. </span>
   }
   // ...
 }
@@ -197,7 +94,7 @@ Now, we can again run
 $ wasp start
 ```
 
-Try going to `/` in our web app -> it will now ask you to log in, and if you follow the link, you will end up at `/auth`.
+Try going to `/` in our web app -> it will now ask you to log in, and if you follow the link, you will end up at `/login`.
 Once you log in or sign up, you will be sent back to `/` and you will see the todo list.
 
 Let's now see how things look in the database! Run:
