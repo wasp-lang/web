@@ -328,48 +328,28 @@ Check our [Todo app tutorial](/docs/tutorials/todo-app/auth) to see how it works
 
 If you require more control in your authentication flow, you can achieve that in the following ways:
 - If you don't want to use already generated Signup and Login pages and want to create your own, you can use `signup` and `login` function by invoking them from the client.
-- If you want to execute custom code on the server during sign up, create your own sign up action which invokes `createNewUser` function, along with your custom code.
+- If you want to execute custom code on the server during sign up, create your own sign up action which invokes Prisma client as `context.entities.[USER_ENTITY].create()` function, along with your custom code.
+
+The code of your custom sign-up action would look like this (your user entity being `User` in this instance):
+```js
+export const signUp = async (args, context) => {
+    // Your custom code before sign-up.
+    // ...
+    const newUser = context.entities.User.create({
+        data: { email: 'some@email.com', password: 'this will be hashed!' } 
+    })
+
+    // Your custom code after sign-up.
+    // ...
+    return newUser
+}
+```
+
+:::info
+You don't need to worry about hashing the password yourself! Even when you are using Prisma's client directly and calling `create()` with a plain-text password, Wasp put middleware in place that takes care of hashing it before storing it to the database.
+:::
 
 #### Specification
-
-### `createNewUser()`
-Wasp provides a function `createNewUser` to be used within a signup action written by a Wasp developer.
-This allows you to run custom code on the server during user sign up.
-```js
-createNewUser(userFields)
-```
-#### `userFields: object`
-An object containing fields of the user entity. `email` and `password` fields are mandatory as they are required to be present in the user entity, as dictated by `EmailAndPassword` authentication method.
-Password is provided as an unhashed `string` and `createNewUser` will take further care of hashing and storing password in the database.
-
-#### `import statement`:
-```js
-import { createNewUser } from @wasp/core/auth.js
-```
-
-Here is a minimal example of a signup action invoking `createNewUser`:
-```css title="myApp.wasp"
-action signUp {
-  fn: import { signUp } from "@ext/actions.js",
-  entities: [User]
-}
-```
-Although we won't be using `User` directly in the `signUp` action, we still need to declare in
-the action definition that this action is affecting `User` - that way Wasp can properly update caches
-of all queries that depend on `User` entity.
-
-```js title="ext/actions.js"
-import { createNewUser } from '@wasp/core/auth.js'
-
-export const signUp = async (args, context) => {
-  // Additional logic can be added here - e.g. requests to the outside services, logging
-  // or anything else needed when signing up a user.
-
-  await createNewUser({ email: args.email, password: args.password })
-}
-```
-
-Having defined `signUp` action as above, we can use it in frontend as defined in the Action section.
 
 ### `login()`
 An action for logging in the user.
