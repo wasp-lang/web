@@ -429,6 +429,23 @@ const SignOut = () => {
 #### Reset password
 Coming soon.
 
+### Updating user's password
+If you need to update user's password, you can do it safely via Prisma client, e.g. within an action:
+```js
+export const updatePassword = async (args, context) => {
+  return context.entities.User.update({
+    where: { id: args.userId },
+    data: {
+      password: 'New pwd which will be hashed automatically!'
+    }
+  })
+}
+```
+You don't need to worry about hashing the password yourself - if you have an `auth` declaration
+in your `.wasp` file, Wasp already set a middleware on Prisma that makes sure whenever password
+is created or updated on the user entity, it is also hashed before it is stored to the database.
+
+
 ### Accessing currently logged in user
 When authentication is enabled in a Wasp app, we need a way to tell whether a user is logged in and access its data.
 With that, we can further implement access control and decide which content is private and which public.
