@@ -364,7 +364,7 @@ Password of the user logging in.
 
 #### `import statement`:
 ```js
-import login from @wasp/auth/login.js
+import login from '@wasp/auth/login.js'
 ```
 Login is a regular action and can be used directly from the frontend.
 
@@ -379,7 +379,7 @@ Fields of user entity declared in `auth`.
 
 #### `import statement`:
 ```js
-import signup from @wasp/auth/signup.js
+import signup from '@wasp/auth/signup.js'
 ```
 Signup is a regular action and can be used directly from the frontend.
 
@@ -392,7 +392,7 @@ logout()
 
 #### `import statement`:
 ```js
-import logout from @wasp/auth/logout.js
+import logout from '@wasp/auth/logout.js'
 ```
 
 ##### Example of usage:
@@ -438,7 +438,7 @@ format.
 ### `useAuth()`
 #### `import statement`:
 ```js
-import useAuth from @wasp/auth/useAuth.js
+import useAuth from '@wasp/auth/useAuth.js'
 ```
 
 ##### Example of usage:
