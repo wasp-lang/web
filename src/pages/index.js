@@ -308,6 +308,14 @@ function WaspGhStarsCount() {
   )
 }
 
+function WaspDiscordBadge() {
+  return (
+    <a href="https://discord.gg/rzdnErX">
+      <img alt="discord" src="https://img.shields.io/discord/686873244791210014?label=chat%20@%20discord" height="29px" />
+    </a>
+  )
+}
+
 function EmailAndGithubCta() {
   return (
     <section className={'section-lg bg-diff'} id="signup">
@@ -346,7 +354,8 @@ function EmailAndGithubCta() {
 
         <div className={clsx('row', styles.responsiveCentered)} style={{ paddingTop: '1rem' }}>
           <div className="col">
-            <WaspGhStarsCount/>
+            <WaspGhStarsCount />
+            <WaspDiscordBadge />
           </div>
         </div>
 
@@ -396,7 +405,8 @@ function Home() {
                   Take the Tutorial
                 </Link>
               </div>
-              <WaspGhStarsCount/>
+              <WaspGhStarsCount />
+              <WaspDiscordBadge />
             </div> {/* End of col. */}
 
             <div className="col col--7">
