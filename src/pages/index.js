@@ -418,6 +418,11 @@ function Home() {
       </header>
 
       <main>
+        <section className={'section-lg'} style={{textAlign: 'center'}}>
+          <div className="container">
+            <a href="https://www.producthunt.com/posts/wasp-lang-alpha?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-wasp-lang-alpha" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=277135&theme=dark&period=daily" alt="Wasp-lang Alpha - Develop web apps in React & Node.js with no boilerplate | Product Hunt" style={{width: '250px', height: '54px'}} width="250" height="54" /></a>
+          </div>
+        </section>
 
         {/* One-line explanation */}
         <section className={'section-lg'}>
