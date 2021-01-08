@@ -118,4 +118,7 @@ module.exports = {
       },
     ],
   ],
+  scripts: [
+    '/scripts/posthog.js'
+  ]
 };
