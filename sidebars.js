@@ -55,7 +55,8 @@ module.exports = {
       collapsed: false,
       items: [
         'contributing',
-        'vision'
+        'vision',
+        'telemetry'
       ]
     }
   ]
