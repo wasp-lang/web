@@ -9,6 +9,7 @@ Most of the apps today are multi-user, and Wasp has first-class support for it, 
 Let's define a Todo list (luckily we have an app for that now ;)) to get this done:
 - [ ] Add Wasp entity `User`.
 - [ ] Add `auth` Wasp declaration.
+- [ ] Add `Login` and `Signup` pages
 - [ ] Modify `ext/MainPage.js` so that it requires authentication.
 - [ ] Add Prisma relation between `User` and `Task` entities.
 - [ ] Modify our queries and actions so that they work only with the tasks belonging to the authenticated user.
@@ -41,11 +42,11 @@ Next, we want to tell Wasp that we want full-stack [authentication](language/bas
 auth {
   // Expects entity User to have email:String and password:String fields.
   userEntity: User, 
-  methods: [ EmailAndPassword ] // More methods coming soon!
+  methods: [ EmailAndPassword ], // More methods coming soon!
 }
 ```
 What this means for us is that Wasp now offers us:
-- Login and Signup pages located at `/login` and `/signup` routes, ready to be used.
+- Login and Signup forms located at `@wasp/auth/forms/Login` and `@wasp/auth/forms/Signup` paths, ready to be used.
 - `logout()` action.
 - React hook `useAuth()`.
 - `context.user` as an argument within query/action.
@@ -60,14 +61,79 @@ To recap, so far we have created:
 - `User` entity.
 - `auth` declaration thanks to which Wasp gives us plenty of auth functionality.
 
+## Adding Login and Signup pages
+
+When we declared `auth` we got login and signup forms generated for us, but now we have to use them in their pages. In our `main.wasp` we'll add the following:
+
+```c title="main.wasp"
+// ...
+
+route "/signup" -> page Signup
+page Signup {
+    component: import Signup from "@ext/SignupPage"
+}
+
+route "/login" -> page Login
+page Login {
+    component: import Login from "@ext/LoginPage"
+}
+```
+
+Great, Wasp now knows how to route these and where to find the pages. Now to the React code of the pages:
+
+```jsx {4-4} title="ext/LoginPage.js"
+import React, from 'react'
+import { Link } from 'react-router-dom'
+
+import LoginForm from '@wasp/auth/forms/Login'
+
+const LoginPage = (props) => {
+  return (
+    <>
+      <LoginForm/>
+      <br/>
+      <span>
+        I don't have an account yet (<Link to="/signup">go to signup</Link>).
+      </span>
+    </>
+  )
+}
+
+export default LoginPage
+```
+
+Signup page is very similar to the login one:
+
+```jsx {4-4} title="ext/LoginPage.js"
+import React, from 'react'
+import { Link } from 'react-router-dom'
+
+import SignupForm from '@wasp/auth/forms/Signup'
+
+const SignupPage = (props) => {
+  return (
+    <>
+      <SignupForm/>
+      <br/>
+      <span>
+        I already have an account (<Link to="/login">go to login</Link>).
+      </span>
+    </>
+  )
+}
+
+export default SignupPage
+```
+
+
+## Updating Main page to check if user is authenticated
+
 Now, let's consider how are we going to handle the situation when user is not logged in.
 What we can do is check in the `MainPage.js` if user is logged in.
 If not, we will instruct them to to to `/login` page where they can sign up or go to `/signup` page where they can sign up.
 Both `/login` and `/signup` pages are already generated for us once we added `auth` declaration to our Wasp file.
 If they succeed, they will be sent back to the `/` (`page Main`).
 While approach like this might be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
-
-## Updating Main page to check if user is authenticated
 
 Finally, let's modify `MainPage.js` so that it sends user to Login page if they are not logged in:
 ```jsx {2-3,8-11} title="ext/MainPage.js"
