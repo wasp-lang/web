@@ -131,7 +131,6 @@ export default SignupPage
 Now, let's consider how are we going to handle the situation when user is not logged in.
 What we can do is check in the `MainPage.js` if user is logged in.
 If not, we will instruct them to to to `/login` page where they can sign up or go to `/signup` page where they can sign up.
-Both `/login` and `/signup` pages are already generated for us once we added `auth` declaration to our Wasp file.
 If they succeed, they will be sent back to the `/` (`page Main`).
 While approach like this might be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
 
