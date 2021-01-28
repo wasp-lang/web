@@ -40,9 +40,11 @@ Next, we want to tell Wasp that we want full-stack [authentication](language/bas
 // ...
 
 auth {
-  // Expects entity User to have email:String and password:String fields.
+  // Expects entity User to have (email:String) and (password:String) fields.
   userEntity: User, 
   methods: [ EmailAndPassword ], // More methods coming soon!
+
+  onAuthFailedRedirectTo: "/login" // We'll see how this is used a bit later
 }
 ```
 What this means for us is that Wasp now offers us:
@@ -128,28 +130,27 @@ export default SignupPage
 
 ## Updating Main page to check if user is authenticated
 
-Now, let's consider how are we going to handle the situation when user is not logged in.
-What we can do is check in the `MainPage.js` if user is logged in.
-If not, we will instruct them to to to `/login` page where they can sign up or go to `/signup` page where they can sign up.
-If they succeed, they will be sent back to the `/` (`page Main`).
-While approach like this might be overly-simplistic for the real-world app, it will serve us well for this simple tutorial!
+Now, let's see how are we going to handle the situation when user is not logged in. `Main` page is a private
+page and we want users to be able to see it only if they are authenticated.
+There is a specific Wasp feature that allows us to achieve this in a simple way:
 
-Finally, let's modify `MainPage.js` so that it sends user to Login page if they are not logged in:
-```jsx {2-3,8-11} title="ext/MainPage.js"
+```c {3} title="main.wasp"
 // ...
-import { Link } from 'react-router-dom'
-import useAuth from '@wasp/auth/useAuth.js'
-// ...
-
-const MainPage = () => {
-  // ...
-  const { data: user } = useAuth()
-  if (!user) {
-    return <span> Please <Link to='/login'>log in</Link>. </span>
-  }
-  // ...
+page Main {
+  authRequired: true,
+  component: import Main from "@ext/MainPage.js"
 }
-// ...
+```
+
+With `authRequired: true` we declared that page `Main` is accessible only to the authenticated users.
+If an unauthenticated user tries to access route `/` where our page `Main` is, they will be redirected to `/login` as specified with `onAuthFailedRedirectTo` property in `auth`.
+
+Also, when `authRequired` is set to `true`, the React component of a page (specified by `component` property within `page`) will be provided `user` object as a prop. It can be accessed like this:
+
+```jsx {1} title="ext/MainPage.js"
+const MainPage = ({ user }) => {
+    // do something with user
+}
 ```
 
 Ok, time to try out how this works!

@@ -25,7 +25,8 @@ Title of your app. It will be displayed in the browser tab, next to the favicon.
 as follows:
 ```css
 page Main {
-    component: import Main from "@ext/pages/Main"
+    component: import Main from "@ext/pages/Main",
+    authRequired: false // optional property
 }
 ```
 
@@ -36,6 +37,13 @@ Name of the page.
 Import statement of the page React element. See importing external code for details.
 
 `Page` also has to be associated with a `Route`, otherwise it won't be accessible in the app.
+
+#### `authRequired: bool`
+Optional property - can be specified only if [`auth`](/docs/language/basic-elements#authentication--authorization) is declared. If set to `true`, only authenticated users will be able to access this page. Unauthenticated users will be redirected to a route declared by `onAuthFailedRedirectTo` property within `auth`.
+
+If `authRequired` is set to `true`, the React component of a page (specified by `component` property) will be provided `user` object as a prop.
+
+Check out this [section of our Todo app tutorial](/docs/tutorials/todo-app/auth#updating-main-page-to-check-if-user-is-authenticated) for an example of usage.
 
 ## Route
 
@@ -300,7 +308,8 @@ Wasp provides authentication and authorization support out-of-the-box. Enabling 
 ```css
 auth {
     userEntity: User,
-    methods: [ EmailAndPassword ]
+    methods: [ EmailAndPassword ],
+    onAuthFailedRedirectTo: "/someRoute"
 }
 ```
 `userEntity: entity`
@@ -309,6 +318,9 @@ Entity which represents the user (sometimes also referred to as *Principal*).
 `methods: [AuthMethod]`
 List of authentication methods that Wasp app supports. Currently supported methods are:
 * `EmailAndPassword`: Provides support for authentication with email address and a password.
+
+`onAuthFailedRedirectTo: String` Name of the route where an unauthenticated user will be redirected to if they try to access a private page (which is declared by setting `authRequired: true` for a specific page).
+Check out this [section of our Todo app tutorial](/docs/tutorials/todo-app/auth#updating-main-page-to-check-if-user-is-authenticated) to see an example of usage.
 
 ### Email and Password
 
