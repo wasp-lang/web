@@ -84,7 +84,9 @@ function HeroCodeExample() {
 /* full-stack auth out-of-the-box */
 auth {
   userEntity: User,
-  methods: [ EmailAndPassword ]
+  methods: [ EmailAndPassword ],
+
+  onAuthFailedRedirectTo: "/login"
 }
 
 route "/" -> page Main
@@ -153,7 +155,8 @@ export default () => <span> Hello World! </span>
 /* full-stack auth out-of-the-box */
 auth {
   userEntity: User,
-  methods: [ EmailAndPassword ] /* more methods coming soon */
+  methods: [ EmailAndPassword ], /* more methods coming soon */
+  onAuthFailedRedirectTo: "/login"
 }
 
 /* email & password required because of the auth method above */
@@ -162,25 +165,21 @@ entity User {=psl
     email       String  @unique
     password    String
 psl=}
+
+page Main {
+  authRequired: true, /* available only to logged in users */
+  component: import Main from "@ext/Main"
+}
 `
 
       const mainUsingAuthCode =
 `import React from 'react'
-import { Link } from 'react-router-dom'
-import useAuth from '@wasp/auth/useAuth.js'
 import Todo from './Todo.js'
 
-export default () => {
-  // A hook provided by Wasp.
-  const { data: user } = useAuth()
-
-  if (!user) {
-    return <span>
-             Please login or signup <Link to='/login'>here</Link>.
-           </span>
-  } else {
-    return <Todo/>
-  }
+/* Because of authRequired property in todoApp.wasp, this page is
+ * available only to logged in users and prop 'user' is automatically provided by wasp. */
+export default ({ user }) => {
+  return <Todo/>
 }
 `
       return (
