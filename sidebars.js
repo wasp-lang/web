@@ -49,6 +49,7 @@ module.exports = {
         'language/basic-elements'
       ]
     },
+    'deploying',
     {
       type: 'category',
       label: 'Other',
