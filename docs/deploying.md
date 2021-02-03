@@ -3,7 +3,9 @@ title: Deploying
 ---
 
 :::danger
-While you can deploy Wasp projects, Wasp is still in alpha and not yet production-ready, since it might have critical security or other types of issues.
+While you can deploy Wasp projects, Wasp is still in alpha and not yet production-ready.
+
+It might have critical security issues or other types of issues, and therefore we don't recommend deploying to production yet.
 :::
 
 Right now, deploying of Wasp project is done by generating the code and then deploying generated code "manually", as explained below.
@@ -65,7 +67,7 @@ will build the docker image and push it to Heroku. App is still not deployed at 
 This step might take some time, especially the very first time, since there are no cached docker layers.
 
 ```
-heroku container:release -app <app-name> web
+heroku container:release --app <app-name> web
 ```
 will deploy the image and restart the app.
 This is it, backend is deployed!
