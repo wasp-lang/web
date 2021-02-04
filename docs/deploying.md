@@ -48,7 +48,7 @@ Take note of the name of the created app -> you will provide it below where need
 
 Unless you have external Postgres database that you want to use, let's create new database on Heroku and attach it to our app:
 ```
-heroku addons:create --app <app-name> heroku-postgresql:hobby-dev`
+heroku addons:create --app <app-name> heroku-postgresql:hobby-dev
 ```
 Heroku will also set `DATABASE_URL` env var for us at this point. If you are using external database, you will have to set it yourself.
 
@@ -58,7 +58,11 @@ heroku config:set --app <app-name> JWT_SECRET=<random_string_at_least_32_charact
 ```
 
 ### Deploy to a Heroku app
-Position yourself in `.wasp/build/` directory (reminder: which you created by running `wasp build` previously).
+Position yourself in `.wasp/build/` directory (reminder: which you created by running `wasp build` previously):
+```
+cd .wasp/build
+```
+assuming you were at the root of your Wasp project at that moment.
 
 ```
 heroku container:push --app <app-name> web
@@ -70,7 +74,7 @@ This step might take some time, especially the very first time, since there are 
 heroku container:release --app <app-name> web
 ```
 will deploy the image and restart the app.
-This is it, backend is deployed!
+This is it, backend is deployed at `https://<app-name>.herokuapp.com`!
 
 Additionally, you can check out the logs with:
 ```
@@ -79,11 +83,15 @@ heroku logs --tail --app <app-name>
 
 
 # Deploying web client (frontend)
-Position yourself in `.wasp/build/web-app` directory (reminder: which you created by running `wasp build` previously).
+Position yourself in `.wasp/build/web-app` directory (reminder: which you created by running `wasp build` previously):
+```
+cd .wasp/build/web-app
+```
+assuming you were at the root of your Wasp project at that moment.
 
 Run
 ```
-REACT_APP_API_URL=<url_to_wasp_backend> npm run build
+npm install && REACT_APP_API_URL=<url_to_wasp_backend> npm run build
 ```
 where <url_to_wasp_backend> is url of the wasp backend that you previously deployed, e.g. `https://wasp-test.herokuapp.com`.
 
@@ -97,7 +105,7 @@ You will need Netlify account and `netlify` CLI installed to follow these instru
 
 Make sure you are logged in with `netlify` CLI. You can check if you are logged in with `netlify status`, and if you are not, you can log in with `netlify login`.
 
-While positioned in `.wasp/build/web-app/` directory, run
+While positioned in `.wasp/build/web-app/` directory, and after you have created `.wasp/build/web-app/build/` directory as per instructions above, run
 ```
 netlify deploy
 ```
