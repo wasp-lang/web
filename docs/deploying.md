@@ -42,9 +42,8 @@ Make sure you are logged in with `heroku` CLI. You can check if you are logged i
 ### Set up a Heroku app (only once per Wasp app)
 Unless you already have a heroku app that you want to deploy to, let's create a new Heroku app:
 ```
-heroku create
+heroku create <app-name>
 ```
-Take note of the name of the created app -> you will provide it below where needed.
 
 Unless you have external Postgres database that you want to use, let's create new database on Heroku and attach it to our app:
 ```
