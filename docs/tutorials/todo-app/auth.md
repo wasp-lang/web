@@ -84,7 +84,7 @@ page Login {
 Great, Wasp now knows how to route these and where to find the pages. Now to the React code of the pages:
 
 ```jsx {4-4} title="ext/LoginPage.js"
-import React, from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import LoginForm from '@wasp/auth/forms/Login'
@@ -106,8 +106,8 @@ export default LoginPage
 
 Signup page is very similar to the login one:
 
-```jsx {4-4} title="ext/LoginPage.js"
-import React, from 'react'
+```jsx {4-4} title="ext/SignupPage.js"
+import React from 'react'
 import { Link } from 'react-router-dom'
 
 import SignupForm from '@wasp/auth/forms/Signup'
