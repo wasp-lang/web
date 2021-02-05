@@ -41,7 +41,7 @@ Next, we want to tell Wasp that we want full-stack [authentication](language/bas
 
 auth {
   // Expects entity User to have (email:String) and (password:String) fields.
-  userEntity: User, 
+  userEntity: User,
   methods: [ EmailAndPassword ], // More methods coming soon!
 
   onAuthFailedRedirectTo: "/login" // We'll see how this is used a bit later
@@ -258,13 +258,13 @@ Right, that should be it!
 Run
 ```shell-session
 $ wasp start
-``` 
+```
 and everything should work as expected now! Each user has their own tasks only they can see and edit.
 
 Try playing around with our app, adding a few users and some tasks. Then run:
 ```shell-session
 $ wasp db studio
-``` 
+```
 <img alt="Database demonstration"
      src={useBaseUrl('img/wasp_db_demonstration.gif')}
      style={{ border: "1px solid black" }}
