@@ -247,10 +247,6 @@ export const updateTask = async ({ taskId, data }, context) => {
     data: { isDone: data.isDone }
   })
 }
-
-export const signUp = async ({ email, password }, context) => {
-  await createNewUser({ email, password })
-}
 ```
 
 :::note
