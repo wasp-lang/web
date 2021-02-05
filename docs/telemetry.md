@@ -3,16 +3,18 @@ title: Telemetry
 ---
 
 ## Overview
+
 The term **telemetry** refers to the collection of certain usage data to help improve the quality of a piece of software (in this case, Wasp).
 
 Our telemetry implementation is anonymized and very limited in its scope, focused on answering following questions:
  - How many people and how often use Wasp?
+ - How many people and how often get to the point of building a Wasp app?
  - How many projects are created with Wasp?
 
 ## When and what is sent?
 
  - Information is sent via HTTPS request when `wasp` CLI command is invoked.
- - Information is sent no more than once in a period of 12 hours (sending is paused for 12 hours after last invocation).
+ - Information is sent no more than twice in a period of 12 hours (sending is paused for 12 hours after last invocation, separately for `wasp build` command and for all other commands).
  - Exact information as it is sent:
    ```json
    {
@@ -20,6 +22,8 @@ Our telemetry implementation is anonymized and very limited in its scope, focuse
      "distinct_id": "bf3fa7a8-1c11-4f82-9542-ec1a2d28786b",
      // Non-identifiable hash representing a project.
      "project_hash": "6d7e561d62b955d1",
+     // True if command was `wasp build`, false otherwise.
+     "is_build": true,
      "wasp_version": "0.1.9.1",
      "os": "linux"
    }
