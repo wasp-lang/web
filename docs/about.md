@@ -1,16 +1,8 @@
 ---
 title: Introduction
 sidebar_label: What is Wasp?
-slug: /
+slug: /about
 ---
-
-:::caution
-**Wasp is in alpha and is therefore likely to change a lot, have bugs and miss important features.**
-
-**Also, if some design decisions don't seem to make much sense, it might be because they are preparation for the next step in evolution of Wasp (even if not we will use it as an excuse anyway :P).**
-
-**Despite all that, Wasp works, so give a try to what is there and imagine the rest together with us (by contributing)!**
-:::
 
 Thanks a lot for giving Wasp a try! In the sections below we will give a short overview of what it is, how
 it works and get you started.

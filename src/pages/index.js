@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import CodeBlock from '@theme/CodeBlock';
@@ -69,6 +69,48 @@ function PageBreakWithLogo() {
   )
 }
 
+function WaspLatestVersion() {
+  const [latestRelease, setLatestRelease] = useState(null)
+
+  useEffect(() => {
+    const fetchRelease = async () => {
+      const response = await fetch(
+        'https://api.github.com/repos/wasp-lang/wasp/releases'
+      )
+      console.log(response)
+      const releases = await response.json()
+      if (releases) {
+        setLatestRelease(releases[0])
+      }
+    }
+    fetchRelease()
+  }, [])
+
+  if (latestRelease) {
+    return (
+      <h4 className={styles.waspVersion}>
+        <a href={latestRelease.html_url}>
+          { latestRelease.name }
+        </a>
+      </h4>
+    )
+  } else {
+    return null
+  }
+}
+
+function ProductHuntBadge() {
+  return (
+    <a href="https://www.producthunt.com/posts/wasp-lang-alpha?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-wasp-lang-alpha" target="_blank">
+      <img 
+        src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=277135&theme=light&period=daily"
+        alt="Wasp-lang Alpha - Develop web apps in React & Node.js with no boilerplate | Product Hunt"
+        style={{width: '250px', height: '54px'}} width="250" height="54"
+      />
+  </a>
+  )
+}
+
 function HeroCodeExample() {
   // NOTE: There is an image in static/img/hero-code-shot.png of this code,
   //   used as the main image of the web app (specified via <meta>) when being
@@ -78,24 +120,22 @@ function HeroCodeExample() {
 
   const createAppWaspCode =
 `app todoApp {
-  title: "ToDo App" /* visible in browser tab */
-}
-
-/* full-stack auth out-of-the-box */
-auth {
-  userEntity: User,
-  methods: [ EmailAndPassword ],
-
-  onAuthFailedRedirectTo: "/login"
+  title: "ToDo App" /* visible in tab */
 }
 
 route "/" -> page Main
 page Main {
-  component: import Main from "@ext/Main" /* import React code */
+  /* import React code */
+  component: import Main from "@ext/Main.js"
+}
+
+auth { /* full-stack auth out-of-the-box */
+  userEntity: User,
+  methods: [ EmailAndPassword ],
 }
 `
   return (
-    <CodeBlockWithTitle title="todoApp.wasp" language="css">
+    <CodeBlockWithTitle title="todoApp.wasp" language="css" metastring="{7-8}">
       { createAppWaspCode }
     </CodeBlockWithTitle>
   )
@@ -138,7 +178,9 @@ export default () => <span> Hello World! </span>
             { createAppWaspCode }
           </CodeBlockWithTitle>
 
-          <CodeBlockWithTitle title="ext/Main.js | External React code, imported above" language="jsx">
+          <CodeBlockWithTitle
+            title="ext/Main.js | External React code, imported above"
+            language="jsx">
             { createAppMainComponentCode }
           </CodeBlockWithTitle>
 
@@ -363,6 +405,28 @@ function EmailAndGithubCta() {
   )
 }
 
+function SocialProofSection() {
+  return (
+    <section className={clsx('section-lg', 'bg-diff', styles.socialProofSection)}>
+      <div className="container">
+        <div className={clsx('row', styles.responsiveCentered)}>
+
+          <div className="col col--10 col--offset-1">
+            <div className={clsx(styles.socialProof)}>
+              <div className={clsx(styles.backedByYC)}>
+                <img className={clsx(styles.ycLogo)} src="img/ycombinator-logo.png" />
+                <span>backed by <strong>Y Combinator</strong></span>
+              </div>
+              <ProductHuntBadge />
+            </div>
+          </div>
+
+        </div> {/* End of row */}
+      </div>
+    </section>
+  )
+}
+
 function Home() {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
@@ -381,35 +445,61 @@ function Home() {
       <header className={clsx('hero', styles.heroBanner)}>
         <div className="container">
 
-          <div className="row">
-            <div className="col col--5">
-              <h1 className="hero-title">Web App Specification Language</h1>
-              <p className="hero-subtitle">{siteConfig.tagline}</p>
+          <div className="row hero-row">
+            <div className="col col--7">
 
-              <div className={styles.buttons}>
-                <Link
-                  className={clsx(
-                    'button button--outline button--secondary button--lg',
-                    styles.heroButton,
-                  )}
-                  to={useBaseUrl('docs/tutorials/getting-started')}>
-                  Get Started
-                </Link>
-                <Link
-                  className={clsx(
-                    'button button--secondary button--lg',
-                    styles.heroButton,
-                  )}
-                  to={todoTutorialUrl}>
-                  Take the Tutorial
-                </Link>
+              <div className="hero-text-col">
+
+                <h2 className="hero-subtitle">{siteConfig.tagline}</h2>
+
+                <div className="hero-works-with">
+                  <h3 className="works-with-text">
+                    Describe high-level features with Wasp DSL and write the rest of your logic
+                    in React, Node.js and Prisma.
+                  </h3>
+                  <div className="hero-works-with-icons">
+                    <img src="img/works-with-logos.png" />
+                  </div>
+                </div>
               </div>
-              <WaspGhStarsCount />
-              <WaspDiscordBadge />
             </div> {/* End of col. */}
 
-            <div className="col col--7">
+            <div className="col col--5">
               <HeroCodeExample/>
+
+            </div> {/* End of col. */}
+
+          </div> {/* End of row. */}
+
+          <div className={clsx('row', styles.responsiveCentered, styles.tryWaspRow)}>
+            <div className="col col--10 col--offset-1">
+
+              <div className={clsx(styles.tryWaspContainer)}>
+                <div className={clsx(styles.startCliCmd)}>
+                  <span><code>curl -sSL http://get.wasp-lang.dev | sh</code></span>
+                </div>
+
+                <div className={styles.startButtonAndVersion}>
+                  <Link
+                    className={clsx(
+                      'button button--primary button--huge',
+                      styles.heroButton,
+                    )}
+                    to={useBaseUrl('docs')}>
+                      Try Wasp in 5 minutes →
+                  </Link>
+                </div>
+              </div>
+
+              <div className={clsx(styles.usingWindows)}>
+                Using Windows? Check the instructions <Link to={useBaseUrl("/docs/#2-installation")}>here</Link>.
+              </div>
+
+              <div>
+                <WaspGhStarsCount />
+                <WaspDiscordBadge />
+              </div>
+
             </div>
           </div> {/* End of row. */}
 
@@ -417,25 +507,30 @@ function Home() {
       </header>
 
       <main>
-        <section className={'section-lg'} style={{textAlign: 'center'}}>
-          <div className="container">
-            <a href="https://www.producthunt.com/posts/wasp-lang-alpha?utm_source=badge-top-post-badge&utm_medium=badge&utm_souce=badge-wasp-lang-alpha" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/top-post-badge.svg?post_id=277135&theme=dark&period=daily" alt="Wasp-lang Alpha - Develop web apps in React & Node.js with no boilerplate | Product Hunt" style={{width: '250px', height: '54px'}} width="250" height="54" /></a>
-          </div>
-        </section>
+
+        {/* Social proof */}
+        {/* <SocialProofSection /> */}
 
         {/* One-line explanation */}
         <section className={'section-lg'}>
           <div className="container">
             <div className={clsx('row', styles.responsiveCentered)}>
-              <div className="col col--10 col--offset-1">
+              <div className="col col--12">
                 <h3 className={'title'}>
-                  Made for devs who want to <span className="title-strong">use modern web
-                  dev stack</span> (React, Node.js, Prisma)&nbsp;<br/>
+                  Wasp is an open source, declarative DSL for devs who want to <span className="title-strong">use modern web dev stack</span>
+                  &nbsp;
+                  <span style={{ whiteSpace: 'nowrap' }}>
+                    (React <img src="img/react-logo.png" height="25px" />,
+                    Node.js <img src="img/node-logo.png" height="25px" />,
+                    Prisma <img src="img/prisma-logo.png" height="25px" />,
+                    ...)
+                  </span>
+                  &nbsp;
                   <span className="title-strong">without writing boilerplate</span>.
-
                 </h3>
                 <h3>
-                  <p>Front-end, back-end and deployment - all within one concise DSL.</p>
+                  <p>Frontend, backend and deployment - all unified with one concise language.</p>
+                  <p>Zero configuration, all best practices.</p>
                 </h3>
               </div>
             </div>
@@ -453,13 +548,9 @@ function Home() {
                 <h2>How it works</h2>
                 <h3>
                   <p>
-                    Given <code>.wasp</code> files as an input, Wasp compiler&nbsp;
+                    Given <code>.wasp</code> + <code>.js</code>, <code>.css</code>, <code>...</code> files as an input, Wasp compiler behind the scene&nbsp;
                     <span className="title-strong">generates the full
                     source code of your web app</span> - front-end, back-end and deployment.
-                  </p>
-                  <p>
-                    Wasp also <span className="title-strong">integrates with the modern web
-                    dev technologies</span> - React, Node.js, CSS, ...
                   </p>
                 </h3>
               </div>
@@ -492,6 +583,94 @@ function Home() {
             </div>
           </section>
         )}
+
+        <PageBreakWithLogo/>
+
+        {/* Quick to start, easy to scale */}
+        <section className={'section-lg'} id="fast-and-scalable">
+          <div className="container">
+            <div className={clsx('row', styles.responsiveCentered)}>
+              <div className="col col--10 col--offset-1">
+                <h2>Quick to start, easy to scale</h2>
+                <h3>
+                  <p>
+                    Wasp aims to be at least as flexible as the traditional web frameworks like Ruby on Rails.
+                    <br/>
+                    Start your project quickly with the best defaults and customize and scale it as it grows.
+                  </p>
+                </h3>
+                <h3>
+                  <p>As an example, we used Wasp to implement a copy of Medium:</p>
+                </h3>
+              </div>
+            </div> {/* End of row */}
+
+            <div className="row">
+              <div className="col col--10 col--offset-1">
+                <a href="https://martin-wasp-rwa.netlify.app" target="_blank">
+                  <img
+                    className="rwa"
+                    src="img/rwa-screenshot.png"
+                    alt="RealWorldApp in Wasp"
+                  />
+                </a>
+              </div>
+            </div>
+
+            <div className={clsx('row', styles.responsiveCentered)}>
+              <div className="col col--10 col--offset-1">
+                <h3>You can try out the deployed app <a href="https://martin-wasp-rwa.netlify.app/">here</a> or check out the source code <a href="https://github.com/wasp-lang/wasp/tree/master/examples/realworld">here</a>.</h3>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <PageBreakWithLogo/>
+
+        {/* What can Wasp do */}
+        <section className={'section-lg'} id="what-can-do">
+          <div className="container">
+
+            <div className={clsx(styles.featuresAndRoadmap, 'row', styles.responsiveCentered)}>
+              <div className="col col--10 col--offset-1">
+                <h2>Features & Roadmap</h2>
+              </div>
+            </div>
+
+            <div className={clsx('row')}>
+              <div className="col col--6">
+                <h3 className={styles.featureListTitle}>Alpha</h3>
+                <ul className={clsx(styles.featuresList, styles.featuresListDone)}>
+                  <li> full-stack auth (email & password) </li>
+                  <li> pages & routing </li>
+                  <li> blurs the line between client & server - define your server actions and queries and call them directly in your client code (RPC)! </li>
+                  <li> smart caching of server actions and queries (automatic cache invalidation) </li>
+                  <li> entity (data model) definition with Prisma.io </li>
+                  <li> ACL on frontend </li>
+                  <li> importing NPM dependencies </li>
+                </ul>
+              </div>
+              <div className="col col--6">
+                <h3 className={styles.featureListTitle}>Coming next</h3>
+                <ul className={clsx(styles.featuresList, styles.featuresListComing)}>
+                  <li> ACL on backend </li>
+                  <li> one-click deployment </li>
+                  <li> more auth methods (Google, Linkedin, ...) </li>
+                  <li> tighter integration of entities with other features </li>
+                  <li> themes and layouts </li>
+                  <li> support for explicitely defined server API </li>
+                  <li> inline JS - ability to mix JS code with Wasp code! </li>
+                  <li> Typescript support </li>
+                  <li> server-side rendering </li>
+                  <li> Visual Editor </li>
+                  <li> support for different languages on backend </li>
+                  <li> richer wasp language with better tooling </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <PageBreakWithLogo/>
 

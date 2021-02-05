@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Wasp',
-  tagline: 'A programming language for building web apps with less code.',
+  tagline: 'A simple language for developing full-stack web apps with less code.',
   url: 'https://wasp-lang.github.io/web',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -8,7 +8,7 @@ module.exports = {
   organizationName: 'wasp-lang', // Usually your GitHub org/user name.
   projectName: 'web', // Usually your repo name.
   themeConfig: {
-    sidebarCollapsible: false,
+    sidebarCollapsible: true,
     navbar: {
       title: '.wasp (alpha)',
       logo: {
@@ -17,35 +17,24 @@ module.exports = {
       },
       items: [
         {
-          to: '/#join-the-list',
-          label: 'Join the list',
-          position: 'right',
-          className: 'navbar-item-email-signup navbar-item-inner'
-        },
-        {
-          to: '/#how-it-works',
-          label: 'How it works',
-          position: 'right',
-          className: 'navbar-item-inner'
-        },
-        {
-          to: '/#the-language',
-          label: 'The Language',
-          position: 'right',
-          className: 'navbar-item-inner'
-        },
-        {
           to: 'docs/',
           activeBasePath: 'docs',
           label: 'Docs',
           position: 'right',
-          className: 'navbar-item-outside'
+          className: 'navbar-item-docs navbar-item-outside'
         },
         {
-          href: 'https://blog.wasp-lang.dev/',
-          label: 'Blog',
+          to: 'https://discord.gg/rzdnErX',
+          label: 'Chat @',
           position: 'right',
-          className: 'navbar-item-outside'
+          className: 'navbar-item-discord navbar-item-outside'
+        },
+
+        {
+          to: '/#join-the-list',
+          label: 'Join the list',
+          position: 'right',
+          className: 'navbar-item-email-signup navbar-item-inner'
         },
         {
           href: 'https://github.com/wasp-lang/wasp',
@@ -65,7 +54,7 @@ module.exports = {
           items: [
             {
               label: 'Getting started',
-              to: 'docs/tutorials/getting-started'
+              to: 'docs'
             },
             {
               label: 'Todo app tutorial',
@@ -92,6 +81,10 @@ module.exports = {
             {
               label: 'GitHub',
               href: 'https://github.com/wasp-lang/wasp'
+            },
+            {
+              label: 'Contact',
+              href: 'docs/contact'
             }
           ],
         },

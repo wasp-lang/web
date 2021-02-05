@@ -13,9 +13,12 @@
   --custom-shadow-lw: 0 3px 5px 0px rgba(0, 0, 0, 0.1);
   --custom-border-radius: 3px;
   --custom-border-radius-md: 6px;
+  --custom-discord-color: #8a9cff;
+  --custom-wasp-color: #ffcc00;
+  --ifm-h3-font-size: 1.3rem;
 
   /* Infima overrides */
-  --ifm-color-primary: #BF9900;
+  --ifm-color-primary: #BF9900; /* wasp color (ffcc00) darkened by 25% */
   --ifm-color-primary-dark: #8a6f04;
   --ifm-color-primary-darker: rgb(31, 165, 136);
   --ifm-color-primary-darkest: rgb(26, 136, 112);
@@ -44,13 +47,49 @@
   --custom-background-color-diff: #2A2A2A;
 }
 
+.button--huge {
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  height: 64px;
+
+  /* --ifm-button-size-multiplier: 1.95; */
+}
+
+.hero-row {
+  margin-bottom: 10rem;
+}
+
 .hero-title {
   font-size: 2.2rem; /* 2.7rem */
   font-weight: 700;
 }
 
 .hero-subtitle {
-  font-size: 1.3rem;
+  font-size: 2.5rem;
+  line-height: 2.7rem;
+  font-weight: 500;
+
+  margin-bottom: 3.5rem;
+}
+
+.hero-text-col {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.hero-works-with-icons img {
+  max-height: 4rem;
+}
+
+.hero-works-with-icons img:not(:last-child) {
+  margin-right: 2.2rem;
+}
+
+.works-with-text {
+  font-size: 1.4rem;
+  margin-bottom: 2rem;
 }
 
 .bg-diff {
@@ -78,6 +117,7 @@
   padding: 2rem 0;
 }
 
+
 .section-text {
   padding-top: 2rem;
 }
@@ -87,7 +127,7 @@
 }
 
 .title {
-  font-size: 1.5rem;
+  font-size: 1.55rem;
 }
 
 .title-strong {
@@ -125,6 +165,18 @@ img.wasp-diagram {
   max-height: 450px;
   background: white;
   padding: 30px;
+}
+
+img.rwa {
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 5px;
+  border-color: var(--ifm-color-primary);
+  margin-bottom: 1rem;
+  padding: 1px;
+}
+img.rwa:hover {
+  opacity: 0.5;
 }
 
 @media screen and (max-width: 996px) {
@@ -192,10 +244,47 @@ h3 {
   font-weight: var(--ifm-font-weight-bold)
 }
 
-.navbar-item-email-signup {
-  text-decoration: underline;
+.navbar-item-docs {
+    border: 2px solid var(--ifm-color-primary);
+    border-radius: var(--ifm-button-border-radius);
+    background-color: var(--ifm-color-primary);
+    color: var(--custom-background-color-diff);
+    margin: 0px 15px;
+}
+.navbar-item-docs:hover {
+    color: var(--custom-background-color-diff);
+    opacity: 0.6;
 }
 
+.navbar-item-discord {
+    color: var(--custom-discord-color);
+    border: 2px solid var(--custom-discord-color);
+    border-radius: var(--ifm-button-border-radius);
+    margin: 0px 15px;
+}
+.navbar-item-discord:after {
+    display: inline-block;
+    background-image: url('/img/discord-logo.webp');
+    background-size: 20px;
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+    vertical-align: middle;
+    content: "";
+}
+.navbar-item-discord:hover {
+    color: var(--custom-discord-color);
+    opacity: 0.6;
+}
+
+.navbar-item-email-signup {
+    text-decoration: underline;
+}
+
+
+.navbar-item-github {
+    margin-right: 15px; /* Because dark/light-theme toggle button at the right does not have its own margin. */
+}
 .navbar-item-github:hover {
   opacity: 0.6;
 }

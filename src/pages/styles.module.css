@@ -6,7 +6,7 @@
  */
 
 .heroBanner {
-  padding: 4rem 0;
+  padding: 12rem 0 4rem 0;
   text-align: left;
   position: relative;
   overflow: hidden;
@@ -14,16 +14,91 @@
   min-height: 70vh;
 }
 
-.buttons {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+.startButtonAndVersion {
+  display: inline-flex;
 
-  margin-bottom: 1.25rem;
+  flex-direction: column;
+
+  align-items: flex-start;
+  /*justify-content: flex-start;*/
 }
 
-.buttons > *:not(:first-child) {
-  margin-left: 1rem;
+.startCliCmd {
+  display: inline-flex;
+  background: #2a2d3e;
+  padding: 0.75rem 1rem;
+
+  align-items: center;
+  color: #bf9900;
+
+  height: 64px;
+
+  border-radius: var(--ifm-button-border-radius);
+}
+
+.startCliCmd code {
+  background: none;
+  //color: #bfc7d5;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.startCliCmd > span::before {
+  content: "$ ";
+}
+
+.tryWaspRow {
+  margin-bottom: 0rem; /* 6 */
+}
+
+.tryWaspContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 0.5rem;
+}
+
+.usingWindows {
+  margin-bottom: 2rem;
+}
+
+.tryWaspContainer div:not(:last-child) {
+  margin-right: 1rem;
+}
+
+.socialProofSection {
+  padding: 3rem 0;
+}
+
+.socialProof {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.socialProof > *:not(:last-child) {
+  margin-right: 1.5rem;
+}
+
+.ycLogo {
+  max-width: 4rem;
+  margin-right: 0.8rem;
+}
+
+.backedByYC {
+  display: flex;
+  align-items: center
+}
+
+.waspVersion {
+  align-self: center;
+  text-decoration: underline;
+
+}
+
+.startButtonAndVersion > *:not(:first-child) {
+  margin-top: 0.8rem;
 }
 
 .features {
@@ -38,8 +113,40 @@
   width: 200px;
 }
 
+.featureListTitle {
+  font-weight: 600;
+  text-align: center;
+}
+
+.featuresList {
+  list-style-type: none;
+}
+
+.featuresList li {
+  padding-left: 1rem;
+  text-indent: -0.2rem;
+}
+
+.featuresList li:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+.featuresListComing li::before {
+  margin-right: 0.5rem;
+  content: "⏳ ";
+}
+
+.featuresListDone li::before {
+  margin-right: 0.5rem;
+  content: "✅ ";
+}
+
 .responsiveCentered {
   text-align: center;
+}
+
+.featuresAndRoadmap {
+  margin-bottom: 2rem;
 }
 
 /* NOTE(matija): it is important that this element is last! That way it overrides
@@ -53,15 +160,25 @@
     padding: 2rem;
   }
 
-  .buttons {
+  .tryWaspContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tryWaspContainer > *:not(:last-child) {
+    margin-right: 0;
+    margin-bottom: 1rem;
+  }
+
+  .startButtonAndVersion {
     display: flex;
     flex-direction: column;
   }
 
-  .buttons > *:not(:first-child) {
+  .startButtonAndVersion > *:not(:first-child) {
     /* NOTE(matija): this is here to counter margin-left from above, the general case. Terrible, I know. */  
     margin-left: 0;
-
     margin-top: 1rem;
   }
 
@@ -69,3 +186,4 @@
     width: 100%;
   }
 }
+/* style={{ width: '300px', height: '60px', lineHeight: '40px', fontSize: '25px', margin: '40px 0px 0px 70px' }} */

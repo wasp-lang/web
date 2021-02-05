@@ -5,6 +5,7 @@ module.exports = {
       label: 'Introduction',
       collapsed: false,
       items: [
+        'getting-started',
         'about',
         'how-it-works'
       ]
@@ -14,11 +15,10 @@ module.exports = {
       label: 'Tutorials',
       collapsed: false,
       items: [
-        'tutorials/getting-started',
         {
           type: 'category',
           label: 'Todo app',
-          collapsed: false,
+          collapsed: true,
           items: [
             'tutorials/todo-app',
             {
@@ -57,7 +57,8 @@ module.exports = {
       items: [
         'contributing',
         'vision',
-        'telemetry'
+        'telemetry',
+        'contact'
       ]
     }
   ]
