@@ -226,9 +226,8 @@ export const getTasks = async (args, context) => {
 }
 ```
 
-```js {1,5,9,15,16,17} title="ext/actions.js"
+```js {1,4,8,14,15,16} title="ext/actions.js"
 import HttpError from '@wasp/core/HttpError.js'
-import { createNewUser } from '@wasp/core/auth.js'
 
 export const createTask = async ({ description }, context) => {
   if (!context.user) { throw new HttpError(403) }
