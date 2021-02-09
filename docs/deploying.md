@@ -63,16 +63,22 @@ cd .wasp/build
 ```
 assuming you were at the root of your Wasp project at that moment.
 
+Log in to Heroku Container Registry:
+```
+heroku container:login
+```
+
+Build the docker image and push it to Heroku:
 ```
 heroku container:push --app <app-name> web
 ```
-will build the docker image and push it to Heroku. App is still not deployed at this point.
+App is still not deployed at this point.
 This step might take some time, especially the very first time, since there are no cached docker layers.
 
+Deploy the pushed image and restart the app:
 ```
 heroku container:release --app <app-name> web
 ```
-will deploy the image and restart the app.
 This is it, backend is deployed at `https://<app-name>.herokuapp.com`!
 
 Additionally, you can check out the logs with:
