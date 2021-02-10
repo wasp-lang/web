@@ -56,6 +56,10 @@
   /* --ifm-button-size-multiplier: 1.95; */
 }
 
+.emailCtaTop {
+  margin-top: 1rem !important;
+}
+
 .hero-row {
   margin-bottom: 10rem;
 }

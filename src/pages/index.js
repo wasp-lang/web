@@ -357,6 +357,27 @@ function WaspDiscordBadge() {
   )
 }
 
+function EmailCta() {
+  return (
+    <section className={clsx('section-lg', 'emailCtaTop')} id="signup">
+      <div className="container">
+
+        <div className={clsx('row', styles.responsiveCentered)}>
+          <div className="col col--10 col--offset-1">
+          </div>
+        </div>
+
+        <div className={clsx('row', styles.responsiveCentered)} style={{ paddingTop: '1rem' }}>
+          <div className="col col--8 col--offset-2">
+            <EmailSignupForm placeholder="Enter your email to receive updates"/>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  )
+}
+
 function EmailAndGithubCta() {
   return (
     <section className={'section-lg bg-diff'} id="signup">
@@ -505,9 +526,11 @@ function Home() {
           </div> {/* End of row. */}
 
         </div>
+
       </header>
 
       <main>
+        <EmailCta />
 
         {/* Social proof */}
         <SocialProofSection />

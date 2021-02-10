@@ -2,7 +2,7 @@ import React from 'react';
 
 import './emailSignupForm.css'
 
-const EmailSignupForm = () => {
+const EmailSignupForm = ({ placeholder }) => {
   return (
     <form
         className="email-signup-form"
@@ -16,7 +16,7 @@ const EmailSignupForm = () => {
         type="email"
         required
         className="input"
-        placeholder="Enter your email"
+        placeholder={placeholder || "Enter your email"}
       />
       <div className="">
         <button className="button button--primary" type="submit">
