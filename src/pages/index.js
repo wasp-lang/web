@@ -432,6 +432,7 @@ function Home() {
   const {siteConfig = {}} = context;
 
   const todoTutorialUrl = useBaseUrl('docs/tutorials/todo-app');
+  const waspRwaDemoUrl = 'https://wasp-rwa.netlify.app';
 
   return (
     <Layout
@@ -607,7 +608,7 @@ function Home() {
 
             <div className="row">
               <div className="col col--10 col--offset-1">
-                <a href="https://martin-wasp-rwa.netlify.app" target="_blank">
+                <a href={waspRwaDemoUrl} target="_blank">
                   <img
                     className="rwa"
                     src="img/rwa-screenshot.png"
@@ -619,7 +620,7 @@ function Home() {
 
             <div className={clsx('row', styles.responsiveCentered)}>
               <div className="col col--10 col--offset-1">
-                <h3>You can try out the deployed app <a href="https://martin-wasp-rwa.netlify.app/">here</a> or check out the source code <a href="https://github.com/wasp-lang/wasp/tree/master/examples/realworld">here</a>.</h3>
+                <h3>You can try out the deployed app <a href={waspRwaDemoUrl}>here</a> or check out the source code <a href="https://github.com/wasp-lang/wasp/tree/master/examples/realworld">here</a>.</h3>
               </div>
             </div>
 
@@ -705,9 +706,7 @@ function Home() {
                 <h2>Take the tutorial</h2>
                 <h3>
                   <p>
-                    Take <Link to={todoTutorialUrl}>our tutorial</Link> and build a full-fledged
-                    Todo app in Wasp!
-                    You can find it <Link to={todoTutorialUrl}>here</Link>.
+                    Take the <Link to={todoTutorialUrl}> Todo App tutorial </Link> and build a full-fledged Todo app in Wasp!
                   </p>
                 </h3>
               </div>
