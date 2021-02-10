@@ -510,7 +510,7 @@ function Home() {
       <main>
 
         {/* Social proof */}
-        {/* <SocialProofSection /> */}
+        <SocialProofSection />
 
         {/* One-line explanation */}
         <section className={'section-lg'}>

@@ -41,6 +41,8 @@
   //color: #bfc7d5;
   color: #fff;
   font-size: 1rem;
+
+  white-space: nowrap;
 }
 
 .startCliCmd > span::before {
@@ -182,8 +184,24 @@
     margin-top: 1rem;
   }
 
+  .socialProof {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .socialProof > *:not(:last-child) {
+    margin-right: 0;
+    margin-bottom: 2rem;
+  }
+
   .heroButton {
     width: 100%;
   }
+
+  .startCliCmd code {
+    font-size: 0.7rem;
+  }
+
 }
 /* style={{ width: '300px', height: '60px', lineHeight: '40px', fontSize: '25px', margin: '40px 0px 0px 70px' }} */
