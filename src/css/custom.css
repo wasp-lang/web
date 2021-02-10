@@ -57,11 +57,11 @@
 }
 
 .emailCtaTop {
-  margin-top: 1rem !important;
+  margin-top: 0 !important;
 }
 
 .hero-row {
-  margin-bottom: 10rem;
+  margin-bottom: 4.5rem;
 }
 
 .hero-title {
@@ -115,6 +115,10 @@
   display: block;
   margin: 0 calc(-1 * var(--ifm-pre-padding));
   padding: 0 var(--ifm-pre-padding);
+}
+
+#signup-atf {
+  padding: 0;
 }
 
 #signup {

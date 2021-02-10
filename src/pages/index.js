@@ -359,7 +359,7 @@ function WaspDiscordBadge() {
 
 function EmailCta() {
   return (
-    <section className={clsx('section-lg', 'emailCtaTop')} id="signup">
+    <section className={clsx('section-lg', 'emailCtaTop')} id="signup-atf">
       <div className="container">
 
         <div className={clsx('row', styles.responsiveCentered)}>
