@@ -58,7 +58,7 @@ const MainPage = () => {
     <div>
       // ...
 
-      <p> <Clocks /> </p>
+      <div> <Clocks /> </div>
 
       // ...
     </div>
