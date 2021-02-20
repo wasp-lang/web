@@ -185,7 +185,7 @@ By declaring a NodeJS function as a Wasp query, following happens:
 - Wasp generates JS function on the client that has the name under which query was declared and takes same arguments as the NodeJS query function. Internally it uses above mentioned HTTP API route to call the NodeJS query function.
 
 On client, you can import generated query JS function as `import getTasks from '@wasp/queries/getTasks.js'`.
-Then, you can either use it directly, or you can use it via special `useQuery` React hook (provided by Wasp** to make it reactive.
+Then, you can either use it directly, or you can use it via special `useQuery` React hook (provided by Wasp**) to make it reactive.
 
 On server, you can import it the same way as on client, and then you can call it directly.
 
