@@ -29,12 +29,16 @@ module.exports = {
           position: 'right',
           className: 'navbar-item-discord navbar-item-outside'
         },
-
         {
           to: '/#join-the-list',
           label: 'Join the list',
           position: 'right',
           className: 'navbar-item-email-signup navbar-item-inner'
+        },
+        {
+          to: 'blog',
+          label: 'Blog',
+          position: 'right'
         },
         {
           href: 'https://github.com/wasp-lang/wasp',
