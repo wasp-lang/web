@@ -8,18 +8,10 @@ import Tabs from '@theme/Tabs'
 import TabItem from '@theme/TabItem'
 import useBaseUrl from '@docusaurus/useBaseUrl';
 
-:::caution
-**Wasp is in alpha and is therefore likely to change a lot, have bugs and miss important features.**
-
-**Despite all that, Wasp works, so give a try to what is there and imagine the rest together with us!**
-:::
-
 
 ## 1. Requirements
 
-### Node.js
-
-**You need to have Node.js installed and it needs to be at least version 12.18.0.**
+### Node.js >= 12.18.0
 
 ```shell-session
 $ node -v  # >= v12.18.0
@@ -71,7 +63,7 @@ We recommend using [nvm](https://github.com/nvm-sh/nvm) for managing your Node.j
   <TabItem value='linux/osx' >
 <div style={{borderLeft: 'solid 6px #bf9900', paddingLeft: '10px'}} >
 
-Run following command to download and install `wasp` binary:
+Open your terminal and run:
 
 ```bash
 curl -sSL http://get.wasp-lang.dev | sh
@@ -106,7 +98,6 @@ Check [waspc/](https://github.com/wasp-lang/wasp/tree/master/waspc) for more det
 </Tabs>
 
 ## 3. Creating and running your first app
-Execute the following commands in your terminal:
 ```shell-session
 $ wasp new MyNewApp # Creates a new web app named MyNewApp.
 $ cd MyNewApp
