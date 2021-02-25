@@ -9,7 +9,7 @@
 :root {
   /* Our custom values */
   --custom-background-color: #FDFDFD;
-  --custom-background-color-diff: #FFF8DE;
+  --custom-background-color-diff: #f4f4f4;
   --custom-shadow-lw: 0 3px 5px 0px rgba(0, 0, 0, 0.1);
   --custom-border-radius: 3px;
   --custom-border-radius-md: 6px;

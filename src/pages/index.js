@@ -505,7 +505,9 @@ function Home() {
                     in React, Node.js and Prisma.
                   </h3>
                   <div className="hero-works-with-icons">
-                    <img src="img/works-with-logos.png" />
+                    <img src="img/react-logo.svg" />
+                    <img src="img/nodejs-logo.svg" />
+                    <img src="img/prisma-logo.svg" />
                   </div>
                 </div>
               </div>
