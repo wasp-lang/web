@@ -56,6 +56,10 @@
   /* --ifm-button-size-multiplier: 1.95; */
 }
 
+.modal-step-title {
+  font-weight: 300;
+}
+
 .emailCtaTop {
   margin-top: 0 !important;
 }

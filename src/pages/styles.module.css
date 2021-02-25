@@ -151,6 +151,13 @@
   margin-bottom: 2rem;
 }
 
+.visibleOnMobileOnly {
+  display: none;
+}
+.visibleOnDesktopOnly {
+  display: block;
+}
+
 /* NOTE(matija): it is important that this element is last! That way it overrides
  * the properties from above, otherwise it would get overriden since the properties above
  * are general. */
@@ -160,6 +167,13 @@
 @media screen and (max-width: 966px) {
   .heroBanner {
     padding: 2rem;
+  }
+
+  .visibleOnMobileOnly {
+    display: block;
+  }
+  .visibleOnDesktopOnly {
+    display: none;
   }
 
   .tryWaspContainer {

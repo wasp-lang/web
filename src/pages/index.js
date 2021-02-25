@@ -9,6 +9,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import Head from '@docusaurus/Head';
 import styles from './styles.module.css';
+import Modal from 'react-modal';
 
 const features = [
   {
@@ -342,7 +343,7 @@ function WaspGhStarsCount() {
   return (
     <iframe
         src="https://ghbtns.com/github-btn.html?user=wasp-lang&repo=wasp&type=star&count=true&size=large" 
-        frameborder="0"
+        frameBorder="0"
         scrolling="0"
         width="160px" height="30px">
     </iframe>
@@ -452,8 +453,32 @@ function Home() {
   const context = useDocusaurusContext();
   const {siteConfig = {}} = context;
 
+  const [modalIsOpen, setModalIsOpen] = React.useState(false)
+
   const todoTutorialUrl = useBaseUrl('docs/tutorials/todo-app');
   const waspRwaDemoUrl = 'https://wasp-rwa.netlify.app';
+
+  const modalStyles = {
+    content : {
+      top                   : '40%',
+      left                  : '40%',
+      transform             : 'translate(-30%, -30%)',
+      paddingTop            : '4rem',
+      /*
+      right                 : 'auto',
+      bottom                : 'auto',
+      marginRight           : '-50%',
+      */
+    }
+  };
+
+  function openModal() {
+    setModalIsOpen(true);
+  }
+
+  function closeModal() {
+    setModalIsOpen(false);
+  }
 
   return (
     <Layout
@@ -501,13 +526,26 @@ function Home() {
                   <span><code>curl -sSL http://get.wasp-lang.dev | sh</code></span>
                 </div>
 
-                <div className={styles.startButtonAndVersion}>
+                <div className={styles.startButtonAndVersion, styles.visibleOnDesktopOnly}>
+                  <button
+                    className={clsx(
+                      'button button--primary button--huge',
+                      styles.heroButton,
+                    )}
+                    onClick={openModal}
+                  >
+                      Try Wasp in 5 minutes →
+                  </button>
+                </div>
+
+                <div className={clsx(styles.startButtonAndVersion, styles.visibleOnMobileOnly)}>
                   <Link
                     className={clsx(
                       'button button--primary button--huge',
                       styles.heroButton,
                     )}
-                    to={useBaseUrl('docs')}>
+                    to={useBaseUrl('/docs')}
+                  >
                       Try Wasp in 5 minutes →
                   </Link>
                 </div>
@@ -516,6 +554,49 @@ function Home() {
               <div className={clsx(styles.usingWindows)}>
                 Using Windows? Check the instructions <Link to={useBaseUrl("/docs/#2-installation")}>here</Link>.
               </div>
+
+              <Modal
+                isOpen={modalIsOpen}
+                style={modalStyles}
+                onRequestClose={closeModal}
+                shouldCloseOnOverlayClick={true}
+              >
+                <div className="container">
+                  <div className={clsx('row')}>
+                    <div className="col col--10">
+
+
+                      <h2 className="modal-step-title">1. Open your terminal and run:</h2>
+                      <div className={clsx(styles.startCliCmd)} style={{ height: '40px' }}>
+                        <span><code>curl -sSL http://get.wasp-lang.dev | sh</code></span>
+                      </div>
+
+                      <h2 className="modal-step-title "style={{marginTop: '4rem'}}>2. Create a new project:</h2>
+                      <div className={clsx(styles.startCliCmd)} style={{ height: '40px' }}>
+                        <span><code>wasp new MyFirstApp</code></span>
+                      </div>
+
+                      <h2 className="modal-step-title" style={{marginTop: '4rem'}}>3. Run your first app:</h2>
+                      <div className={clsx(styles.startCliCmd)} style={{ height: '40px', marginRight: '10px' }}>
+                        <span><code>cd MyFirstApp && wasp start</code></span>
+                      </div>
+                      <span>
+                        That's it!
+                        Open <Link to='http://localhost:3000/'>http://localhost:3000</Link> and see how it looks like!
+                      </span>
+
+                      <div style={{marginTop: '4rem'}}>
+                        <span>
+                          You ran into problems or want more details? Refer to the <Link to={useBaseUrl('/docs')}>docs</Link>.
+                        </span>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+
+              </Modal>
 
             </div>
           </div> {/* End of row. */}
