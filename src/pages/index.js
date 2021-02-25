@@ -125,7 +125,7 @@ function HeroCodeExample() {
 
 route "/" -> page Main
 page Main {
-  /* import React code */
+  /* import your React code */
   component: import Main from "@ext/Main.js"
 }
 
@@ -135,7 +135,7 @@ auth { /* full-stack auth out-of-the-box */
 }
 `
   return (
-    <CodeBlockWithTitle title="todoApp.wasp" language="css" metastring="{7-8}">
+    <CodeBlockWithTitle title="todoApp.wasp" language="css">
       { createAppWaspCode }
     </CodeBlockWithTitle>
   )
@@ -517,20 +517,13 @@ function Home() {
                 Using Windows? Check the instructions <Link to={useBaseUrl("/docs/#2-installation")}>here</Link>.
               </div>
 
-              <div>
-                <WaspGhStarsCount />
-                <WaspDiscordBadge />
-              </div>
-
             </div>
           </div> {/* End of row. */}
 
         </div>
-
       </header>
 
       <main>
-        <EmailCta />
 
         {/* Social proof */}
         <SocialProofSection />

@@ -20,29 +20,27 @@ module.exports = {
           to: 'docs/',
           activeBasePath: 'docs',
           label: 'Docs',
-          position: 'right',
+          position: 'left',
           className: 'navbar-item-docs navbar-item-outside'
-        },
-        {
-          to: 'https://discord.gg/rzdnErX',
-          label: 'Chat @',
-          position: 'right',
-          className: 'navbar-item-discord navbar-item-outside'
-        },
-        {
-          to: '/#join-the-list',
-          label: 'Join the list',
-          position: 'right',
-          className: 'navbar-item-email-signup navbar-item-inner'
         },
         {
           to: 'blog',
           label: 'Blog',
-          position: 'right'
+          position: 'left'
         },
         {
           href: 'https://github.com/wasp-lang/wasp',
           className: 'navbar-item-github',
+          position: 'right',
+        },
+        {
+          href: 'https://twitter.com/WaspLang',
+          className: 'navbar-item-twitter',
+          position: 'right',
+        },
+        {
+          href: 'https://discord.gg/rzdnErX',
+          className: 'navbar-item-discord',
           position: 'right',
         },
       ],
