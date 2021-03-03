@@ -1,5 +1,5 @@
 ---
-title: Creating a domain specific language for developing web apps with less code
+title: Creating a programming language for developing web apps with less code
 author: Martin Sosic
 author_title: Co-founder @ Wasp
 author_url: https://github.com/martinsos
