@@ -1,5 +1,5 @@
 ---
-title: Creating a programming language for developing web apps with less code
+title: Wasp - language for developing full-stack Javascript web apps with no boilerplate
 author: Martin Sosic
 author_title: Co-founder @ Wasp
 author_url: https://github.com/martinsos
@@ -24,9 +24,9 @@ Subject idea: Using domain specific language to do web development with no boile
 
 For the last year and a half, my twin brother and I have been working on [Wasp](https://wasp-lang.dev): a new programming language for developing full-stack web apps with less code.
 
-Wasp is a simple declarative language that makes developing web apps easy while still allowing you to use the latest technologies like React, Node.js, and Prisma.
+Wasp is a **simple declarative language** that makes developing web apps easy while still allowing you to use the latest technologies like **React, Node.js, and Prisma**.
 
-In this post I will share with you why we believe Wasp could be a big thing for web development, how it works, where are we right now and what is the plan for the future!
+In this post, I will share with you why we believe Wasp could be a big thing for web development, how it works, where we are right now and what is the plan for the future!
 
 <!--truncate-->
 
@@ -41,15 +41,17 @@ You know how to use React, know your way around HTML/CSS/…, know how to write 
   />
 </p>
 
+Jose Aguinaga described in a fun way the unexpected complexity of web app development in his blog post ["How it feels to learn JavaScript in 2016"](https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f), which still feels relevant 4 years later. 
+
 We are building Wasp because even though we are both experienced developers and have worked on multiple complex web apps in various technologies (JQuery -> Backbone -> Angular -> React, own scripts / makefile -> Grunt -> Gulp -> Webpack, PHP -> Java -> Node.js, …), we still feel **building web apps is harder than it should be**, due to a lot of boilerplate and repetitive work involved in the process.  
-While the tech stack keeps advancing rapidly, the core requirements of the apps are mostly remaining the same (auth, routing, data model CRUD, ACL, …).
 
-I love the blog post from Jose Aguinaga about this very topic, from 2016 but still feels very true: ["How it feels to learn JavaScript in 2016"](https://hackernoon.com/how-it-feels-to-learn-javascript-in-2016-d3a717dd577f).
+The main insight for us was that while the tech stack keeps advancing rapidly, the core requirements of the apps are mostly remaining the same (auth, routing, data model CRUD, ACL, …).
 
-That is why almost 2 years ago we started thinking about separating web app specification (what it should do) from its implementation (how it should do it).  
-This led us to the idea of extracting common web app features and concepts into a special specification language (Wasp), while the implemenation details are still described via a modern stack (right now React, Node.js, Prisma).
+That is why almost 2 years ago we started thinking about **separating web app specification** (what it should do) **from its implementation** (how it should do it).  
+This led us to the idea of extracting common web app features and concepts into a special specification language (Wasp), while the implementation details are still described via a modern stack (right now React, Node.js, Prisma).
 
-Our vision with Wasp is to create a powerful but simple language where you can describe your web app as humanly as possible. We want to make the top of that iceberg on the image above as pleasant as possible while making the bottom part much smaller.  
+Our vision with Wasp is to create **a powerful but simple language where you can describe your web app as humanly as possible**.
+We want to make the top of that iceberg on the image above as pleasant as possible while making the bottom part much smaller.  
 In such language, with just a few words, you can specify pages and their routes, specify which type of authentication you want, define basic entities / data models, describe basic data flow, choose where you want to deploy, implement specific details in React/Node, and let Wasp take care of connecting it all, building it and deploying it.
 
 ```css title="Example of wasp code describing part of a simple full-stack web app."
@@ -84,14 +86,18 @@ However, we want to take things one step further - by designing a language speci
 On the other hand, we are not trying to replace everything with Wasp nor think that would make sense - just the opposite, Wasp acts as a “glue” between your React and Node.js code, saving you from the grunt work while allowing you to keep the flexibility of writing your own code.
 **The majority of the code is still being written in React and Node.js, with Wasp serving as the backbone of your whole application.**
 
-Another benefit of a DSL is that it allows Wasp to **understand the web app’s requirements during the build time and reason about i** before generating the final code, and this is what we are especially excited about.  
+Another benefit of a DSL is that it allows Wasp to **understand the web app’s requirements during the build time and reason about it** before generating the final code, and this is what we are especially excited about.
+
 For example, when generating code to be deployed to production, it could pick the most appropriate architecture based on its understanding of the web app and deploy it to serverless or another type of architecture (or even a combination).
-Another example would be reusing your data model logic through all the parts of the stack while defining it just once in Wasp.  
+Another example would be reusing your data model logic through all the parts of the stack while defining it just once in Wasp.
+
 DSL opens the potential for optimizations, static analysis, extensibility, and unparalleled ergonomics.
 
 ## How does it work?
 
-Wasp’s compiler is built in Haskell and it compiles the source code that is a combination of .wasp files and source code in React/Node.js into the target code in just React and Node.js (currently in Javascript, but we plan to move to Typescript soon).
+Wasp compiler compiles the .wasp/React/Node.js source code into just React/Node.js target code.  
+Currently, Wasp supports only Javascript, but we plan to add Typescript soon.  
+Technical note: Wasp compiler is implemented in Haskell.
 
 ![Wasp compilation diagram](/img/wasp-compilation.png)
 
@@ -103,7 +109,7 @@ If not ejecting, there is no need for you to ever look at the generated code - i
 Wasp is used via `wasp` CLI - to run wasp project in development, all you need to do is run `wasp start`.
 
 <p align="center">
-  <img alt="Iceberg of web app development"
+  <img alt="Wasp CLI output"
       src={useBaseUrl('img/wasp-cli-output.png')}
   />
 </p>
@@ -111,13 +117,13 @@ Wasp is used via `wasp` CLI - to run wasp project in development, all you need t
 
 ## Where is Wasp now and where is it going?
 
-Our big vision is to move as much of the web app domain knowledge as possible into the Wasp language itself, giving Wasp more power and flexibility.  
+Our big vision is to move as much of the web app domain knowledge as possible into the Wasp language itself, giving Wasp more power and flexibility.
+
 Ultimately, since Wasp would have such a deep understanding of the web app's requirements, we could generate a visual editor on top of it - allowing non-developers to participate in development alongside developers.
 
-Also, Wasp wouldn't be tied to the specific technology but rather support multiple technologies (React/Angular/..., Node/Go/...).
+Also, Wasp wouldn't be tied to the specific technology but rather support multiple technologies (React/Angular/..., Node/Go/...**.
 
-We are currently in Alpha and many features are still rough or missing, but you can try it out and build and deploy web apps!
-There are things we haven’t solved yet and others that will probably change as we progress.
+**Wasp is currently in Alpha** and some features are still rough or missing, there are things we haven’t solved yet and others that will probably change as we progress, but **you can try it out and build and deploy web apps**!
 
 ### What Wasp currently supports:
  - ✅ full-stack auth (email & password)
@@ -131,17 +137,17 @@ There are things we haven’t solved yet and others that will probably change as
 ### What is coming:
  - ⏳ ACL on backend
  - ⏳ one-click deployment
- - ⏳ more auth methods (Google, Linkedin, ...)
+ - ⏳ more auth methods (Google, Linkedin, ...**
  - ⏳ tighter integration of entities with other features
  - ⏳ themes and layouts
  - ⏳ support for explicitly defined server API
- - ⏳ inline JS - ability to mix JS code with Wasp code!
+ - ⏳ inline JS - the ability to mix JS code with Wasp code!
  - ⏳ Typescript support
  - ⏳ server-side rendering
  - ⏳ Visual Editor
- - ⏳ support for different languages on backend
+ - ⏳ support for different languages on the backend
  - ⏳ richer wasp language with better tooling 
 
-You can check out our repo at https://github.com/wasp-lang/wasp and give it a try at https://wasp-lang.dev/docs -> we are always looking for feedback and suggestions on how to shape Wasp!
+**You can check out our repo** at https://github.com/wasp-lang/wasp and **give it a try** at https://wasp-lang.dev/docs -> we are always looking for feedback and suggestions on how to shape Wasp!
 
-We also have a community on [Discord](https://discord.com/invite/rzdnErX), where we chat about Wasp-related stuff.
+We also have a **community** on [Discord](https://discord.com/invite/rzdnErX), where we chat about Wasp-related stuff - join us to see what we are up to, share your opinions or get help with your Wasp project.
