@@ -600,6 +600,14 @@ function Home() {
 
               </Modal>
 
+
+              <div className={clsx('row', styles.responsiveCentered)} style={{ paddingTop: '1rem' }}>
+                <div className="col">
+                  <WaspGhStarsCount />
+                  <WaspDiscordBadge />
+                </div>
+              </div>
+
             </div>
           </div> {/* End of row. */}
 
