@@ -50,6 +50,7 @@ module.exports = {
       ]
     },
     'deploying',
+    'examples',
     {
       type: 'category',
       label: 'Other',
