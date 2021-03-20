@@ -464,6 +464,7 @@ function Home() {
       left                  : '40%',
       transform             : 'translate(-30%, -30%)',
       paddingTop            : '4rem',
+      background            : 'var(--ifm-hero-background-color)',
       /*
       right                 : 'auto',
       bottom                : 'auto',
