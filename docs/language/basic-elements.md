@@ -514,3 +514,27 @@ export const createTask = async (task, context) => {
 In order to implement access control, each operation is responsible for checking `context.user` and
 acting accordingly - e.g. if `context.user` is `undefined` and the operation is private then user
 should be denied access to it.
+
+
+## .env
+
+Your project will likely be using environment variables for configuration, typically to define connection to the database, API keys for external services and similar.
+
+When in production, you will typically define environment variables through mechanisms provided by your hosting provider.
+
+However, when in development, you might also need to supply certain environment variables, and to avoid doing it "manually", Wasp supports `.env` (dotenv) file where you can define environment variables that will be used during development (they will not be used during production).
+
+`.env` file has to be defined in the root of your Wasp project.
+
+`.env` file should not be commited to the version control - we already ignore it by default in the .gitignore file we generate when you create a new Wasp project via `wasp new` cli command.
+
+Variables are defined in `.env` in the form of `NAME=VALUE`, for example:
+```
+DATABASE_URL=postgresql://localhost:5432
+MY_VAR=somevalue
+```
+
+Any env vars defined in the `.env` will be forwarded do the server-side of your Wasp project and therefore accessible in your nodejs code via `process.env`, for example:
+```js
+console.log(process.env.DATABASE_URL)
+```
