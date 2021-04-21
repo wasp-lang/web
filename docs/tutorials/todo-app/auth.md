@@ -29,7 +29,7 @@ psl=}
 
 Run:
 ```shell-session
-$ wasp db migrate-save "Added user"
+$ wasp db migrate-dea
 ```
 to propagate the schema change (we added User).
 
@@ -201,7 +201,7 @@ psl=}
 
 We modified entities by adding User-Task relation, so let's run
 ```shell-session
-$ wasp db migrate-save "user-task-relation"
+$ wasp db migrate-dev
 ```
 to create a database schema migration and apply it to the database.
 

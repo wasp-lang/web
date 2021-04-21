@@ -145,7 +145,7 @@ Entity-system in Wasp is based on [Prisma](http://www.prisma.io), and currently 
 on top of it. The workflow is as follows:
 
 1. Wasp developer creates/updates some of the entities in `.wasp` file.
-2. Wasp developer runs `wasp db migrate-save <migration_name>`.
+2. Wasp developer runs `wasp db migrate-dev`.
 3. Migration data is generated in `migrations/` folder (and should be commited).
 4. Wasp developer uses Prisma JS API to work with the database when in Operations.
 
@@ -534,7 +534,51 @@ DATABASE_URL=postgresql://localhost:5432
 MY_VAR=somevalue
 ```
 
-Any env vars defined in the `.env` will be forwarded do the server-side of your Wasp project and therefore accessible in your nodejs code via `process.env`, for example:
+Any env vars defined in the `.env` will be forwarded to the server-side of your Wasp project and therefore accessible in your nodejs code via `process.env`, for example:
 ```js
 console.log(process.env.DATABASE_URL)
 ```
+
+## Database
+
+You can specify database to be used by Wasp via `db` element (there can be only one such element per Wasp project):
+
+```css
+db {
+  system: PostgreSQL
+}
+```
+If you don't have `db` block, default database is used (which is `SQLite`).
+
+If you create or modify `db` declaration, run `wasp db migrate-dev` to apply the changes.
+
+#### `system: identifier`
+Database system that Wasp will use. It can be either `PostgreSQL` or `SQLite`.
+
+### SQLite
+Default database is `SQLite`, since it is great for getting started with a new project (needs no configuring), but it can be used only in development - once you want to deploy Wasp to production you will need to switch to `PostgreSQL` and stick with it.
+Check below for more details on how to migrate from SQLite to PostgreSQL.
+
+### PostgreSQL
+When using `PostgreSQL` (`db { system: PostgreSQL }`), you will need to spin up a postgres database on your own so it runs during development (when running `wasp start` or doing `wasp db ...` commands) and provide Wasp with `DATABASE_URL` environment variable that Wasp will use to connect to it.
+
+One of the easiest ways to do this is by spinning up postgres docker container when you need it with the shell command
+```
+docker run \
+  --rm \
+  --publish 5432:5432 \
+  -v postgresql-data:/var/lib/postgresql/data \
+  --env POSTGRES_PASSWORD=devpass \
+  postgres
+```
+and adding the line
+```
+DATABASE_URL=postgresql://postgres:devpass@localhost:5432/postgres
+```
+to the `.env` file in the root directory of your Wasp project.
+
+### Migrating from SQLite to PostgreSQL
+To run Wasp app in production, you will need to switch from `SQLite` to `PostgreSQL`.
+1. Set `db.system` to `PostgreSQL` and set `DATABASE_URL` env var accordingly (as described [above](/docs/language/basic-elements#postgresql)).
+2. Delete old migrations, since they are SQLite migrations and can't be used with PostgreSQL: `rm -r migrations/`.
+3. Run `wasp db migrate-dev` to apply new changes and create new, initial migration. You will need to have your postgres database running while doing this (check [above](/docs/language/basic-elements#postgresql) for easy way to get it running).

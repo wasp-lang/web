@@ -21,7 +21,7 @@ Since Wasp uses [Prisma](https://www.prisma.io) as a database, definition of an 
 
 After this change and before running `wasp start`, we first need to run:
 ```shell-session
-$ wasp db migrate-save "Added task entity"
+$ wasp db migrate-dev
 ```
 This instructs Prisma to create a new database schema migration (you'll see a new directory `migrations/` appeared in the root dir of our app) and apply it to the database.
 
