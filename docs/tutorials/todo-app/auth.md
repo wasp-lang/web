@@ -29,7 +29,7 @@ psl=}
 
 Run:
 ```shell-session
-$ wasp db migrate-dea
+$ wasp db migrate-dev
 ```
 to propagate the schema change (we added User).
 
