@@ -59,6 +59,7 @@ module.exports = {
         'contributing',
         'vision',
         'telemetry',
+        'cli',
         'contact'
       ]
     }
