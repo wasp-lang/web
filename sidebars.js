@@ -49,6 +49,7 @@ module.exports = {
         'language/basic-elements'
       ]
     },
+    'cli',
     'deploying',
     'examples',
     {
@@ -59,7 +60,6 @@ module.exports = {
         'contributing',
         'vision',
         'telemetry',
-        'cli',
         'contact'
       ]
     }

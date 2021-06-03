@@ -1,11 +1,11 @@
 ---
 title: CLI Reference
 ---
-This document describes the Prisma CLI commands, arguments, and options.
+This document describes the Wasp CLI commands, arguments, and options.
 
 ## Overview
 
-The `wasp` command can be called from command line once installed. 
+The `wasp` command can be called from command line once [installed](https://wasp-lang.dev/docs/#2-installation). 
 When called without arguments, it will display its command usage and help document:
 
 ```
@@ -35,18 +35,10 @@ Discord (chat): https://discord.gg/rzdnErX
 
 ## Commands
 ### General
- - `wasp new <project-name>` creates new Wasp project.
+ - `wasp new <project-name>` creates new Wasp project. A directory with the provided project-name will be created, containing boilerplate code.
  
    ```
-   $ wasp new MyApp
-   
-   Created new Wasp app in ./MyApp directory!
-   To run it, do:
-
-       cd MyApp
-       wasp start
-
-   NOTE: Wasp is still in Alpha, therefore not yet production ready and might change significantly in the future versions.   
+   $ wasp new MyFirstProject
    ```
  - `wasp version` prints current version of CLI.
  
@@ -57,12 +49,9 @@ Discord (chat): https://discord.gg/rzdnErX
    ``` 
    
 ### In project
- - `wasp start` runs Wasp app in development mode, watching for file changes.
-   
-   ```
-   wasp start
-   ```
- - `wasp clean` deletes all generated code and other cached artifacts.
+ - `wasp start` runs Wasp app in development mode. It opens a browser tab with your application running, and watches for any changes to .wasp or files in ext/ to automatically reflect in the browser. It also shows messages from web app, server and database on stdout/stderr.
+ 
+ - `wasp clean` deletes all generated code and other cached artifacts. If using SQlite, it also deletes the SQlite database. It is the Wasp equivalent to "try shutting it down and turning back on".
   
    ```
    $ wasp clean
@@ -70,12 +59,10 @@ Discord (chat): https://discord.gg/rzdnErX
    Deleting .wasp/ directory...
    Deleted .wasp/ directory.
    ```
- - `wasp build` generates full web app code, ready for deployment. Use when deploying or ejecting.
+ 
+ - `wasp build` generates full web app code, ready for deployment. Use when deploying or ejecting. Generated code goes in the .wasp/build folder.
   
-   ```
-   wasp build
-   ```
- - `wasp telemetry` prints telemetry status.
+ - `wasp telemetry` prints [telemetry](https://wasp-lang.dev/docs/telemetry) status.
    
    ```
    $ wasp telemetry 
@@ -87,14 +74,9 @@ Discord (chat): https://discord.gg/rzdnErX
 
    ```
    
-#### `db` commands
- - `wasp db migrate-dev` ensures dev database corresponds to the current state of schema(entities): it generates a new migration if there are changes in the schema and it applies any pending migration to the database.
    
-   ```
-   wasp db migrate-dev 
-   ```
+#### Wasp has a set of commands for working with the db. They all start with `db` and mostly call prisma commands in the background.
+
+ - `wasp db migrate-dev` ensures dev database corresponds to the current state of schema (entities): it generates a new migration if there are changes in the schema and it applies any pending migration to the database.
+   
  - `wasp db studio` opens the GUI for inspecting your database.
-  
-   ```
-   wasp db studio
-   ```
