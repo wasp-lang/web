@@ -74,8 +74,8 @@ Discord (chat): https://discord.gg/rzdnErX
 
    ```
    
-### Database 
-##### Wasp has a set of commands for working with the database. They all start with `db` and mostly call prisma commands in the background.
+#### Database 
+Wasp has a set of commands for working with the database. They all start with `db` and mostly call prisma commands in the background.
 
  - `wasp db migrate-dev` ensures dev database corresponds to the current state of schema (entities): it generates a new migration if there are changes in the schema and it applies any pending migration to the database.
    
