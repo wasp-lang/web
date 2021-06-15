@@ -49,6 +49,7 @@ module.exports = {
         'language/basic-elements'
       ]
     },
+    'cli',
     'deploying',
     'examples',
     {
